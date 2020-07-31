@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saturday Evening Mass</title>
+</head>
+<body>
+    <button id="new-template">Make New Template</button>
+    <input id="enter-day" type="text" placeholder="Day: Monday">
+    <input id="enter-date" type="text" placeholder="Date: mm/dd/yyyy">
+    <input id="liturgical-week" type="text" placeholder="Liturgical Week: 18th">
+    <input id="celebrant" type="text" placeholder="Celebrant: Fr. First Last">
+    <input id="liturgical-season" type="text" placeholder="Advent/Ordinary Time/etc.">
+    <input id="enter-embed-code-facebook" type="text" placeholder="ends in 2F">
+    
+    <script>
+        let enterDate = document.getElementById('enter-date');
+        let enterDay = document.getElementById('enter-day');
+        let dayOfWeek = enterDay.value.toLowerCase();
+        console.log(dayOfWeek);
+        let newTemplate = document.getElementById('new-template');
+        let liturgicalWeek = document.getElementById('liturgical-week');
+        let liturgicalSeason = document.getElementById('liturgical-season');
+        let celebrant = document.getElementById('celebrant');
+        let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');
+        function makeTemplate(){
+            console.log(
+        `
+        <div style="text-align: center;">
+        <h1>Join Us For:</h1>
+        <p>${enterDate.value} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason}</p>
+        
+        
+        <em style="font-size: 14px;">Celebrant: ${celebrant.value}</em>
+        
+        <p style="margin: 0px;">
+            <em style="font-size: 14px;">
+                <span style="color:#ff0000;">
+                    For ${enterDay.value} ${enterDate.value}<br> organ prelude begins shortly before Mass starts at 5:15 PM
+                </span>
+            </em>
+        </p>
+        <div id="${enterDay.value}Morning" style="text-align: center; background-image:url('/sites/default/files/files/8_1%20Sunday%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
+            <iframe id="saturdayMorningIframe" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+        </div>
+        <div>
+            <p style="margin: 0px;">
+                <em>Note: After initial streaming, Mass will be available on Facebook <a href="https://www.facebook.com/watch/cathedralsaintpaul/170745247224514/" target="_blank">here</a> & YouTube <a href="https://www.youtube.com/playlist?list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO" target="_blank">here</a>.
+                </em>
+            </p>
+            <p style="margin:0px">
+                Mass readings available free from Magnificat:
+            </p>
+            <ul style="list-style-type: none; margin-top: 0px;">
+                <li>
+                    <a href="https://us.magnificat.net/free" target="_blank">
+                        English
+                    </a>
+                </li>
+                <li>
+                    <a href="https://latina.magnificat.net/gratis" target="_blank">
+                        Spanish
+                    </a>
+                </li>
+                <li>
+                    <a href="https://us.magnificat.net/flipbook/KID/sample/" target="_blank">
+                        For Children
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+    <hr>
+    <script>
+        let saturdayAMiFrame = document.getElementById("saturdayMorningIframe");
+        let saturdayAM = document.getElementById("saturdayMorning");
+        var saturdayDate = new Date();
+        var saturdayMth = saturdayDate.getMonth() + 1;
+        var saturdayDy = saturdayDate.getDate();
+        var saturdayHr = saturdayDate.getHours();
+        var saturdayMin = saturdayDate.getMinutes();
+        var saturdaySec = saturdayDate.getSeconds();
+        saturdayMth = (saturdayMth < 10 ? "0" : "") + saturdayMth;
+        saturdayDy = (saturdayDy < 10 ? "0" : "") + saturdayDy;
+        saturdayHr = (saturdayHr < 10 ? "0" : "") + saturdayHr;
+        saturdayMin = (saturdayMin < 10 ? "0" : "") + saturdayMin;
+        saturdaySec = (saturdaySec < 10 ? "0" : "") + saturdaySec;
+        var saturdayStr = saturdayMth + "-" + saturdayDy + " " +  saturdayHr + ":" + saturdayMin;
+        saturdayMonth = "08";
+        saturdayDay = "01";
+        saturdayHour = "17";
+        saturdayMinutes = "09";
+        var saturdayInputStr = saturdayMonth + "-" + saturdayDay + " " + saturdayHour + ":" + saturdayMinutes;
+        saturdayGetFormattedDate();
+        function saturdayGetFormattedDate(){
+            if (saturdayStr < saturdayInputStr){
+                saturdayAMiFrame.style.visibility = "hidden";
+                console.log("hide iframe");
+            } else {
+                saturdayAMiFrame.style.visibility = "visible";
+                saturdayAM.style.backgroundImage = "none";
+                console.log("show iframe");
+            }
+        }
+    <\/script>`
+        );
+        }
+        
+        newTemplate.addEventListener('click', function(){
+            makeTemplate();
+        });
+
+        // let saturdayAMiFrame = document.getElementById("saturdayMorningIframe");
+        // let saturdayAM = document.getElementById("saturdayMorning");
+        // var saturdayDate = new Date();
+        // var saturdayMth = saturdayDate.getMonth() + 1;
+        // var saturdayDy = saturdayDate.getDate();
+        // var saturdayHr = saturdayDate.getHours();
+        // var saturdayMin = saturdayDate.getMinutes();
+        // var saturdaySec = saturdayDate.getSeconds();
+        // saturdayMth = (saturdayMth < 10 ? "0" : "") + saturdayMth;
+        // saturdayDy = (saturdayDy < 10 ? "0" : "") + saturdayDy;
+        // saturdayHr = (saturdayHr < 10 ? "0" : "") + saturdayHr;
+        // saturdayMin = (saturdayMin < 10 ? "0" : "") + saturdayMin;
+        // saturdaySec = (saturdaySec < 10 ? "0" : "") + saturdaySec;
+        // var saturdayStr = saturdayMth + "-" + saturdayDy + " " +  saturdayHr + ":" + saturdayMin;
+        // saturdayMonth = "08";
+        // saturdayDay = "01";
+        // saturdayHour = "17";
+        // saturdayMinutes = "09";
+        // var saturdayInputStr = saturdayMonth + "-" + saturdayDay + " " + saturdayHour + ":" + saturdayMinutes;
+        // saturdayGetFormattedDate();
+        // function saturdayGetFormattedDate(){
+        //     if (saturdayStr < saturdayInputStr){
+        //         saturdayAMiFrame.style.visibility = "hidden";
+        //         console.log("hide iframe");
+        //     } else {
+        //         saturdayAMiFrame.style.visibility = "visible";
+        //         saturdayAM.style.backgroundImage = "none";
+        //         console.log("show iframe");
+        //     }
+        // }
+    </script>
+</body>
+</html>
