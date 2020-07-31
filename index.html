@@ -8,7 +8,7 @@
 <body>
     <button id="new-template">Make New Template</button>
     <input id="enter-day" type="text" placeholder="Day: Monday">
-    <input id="enter-date" type="text" placeholder="Date: mm/dd/yyyy">
+    <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
     <input id="liturgical-week" type="text" placeholder="Liturgical Week: 18th">
     <input id="celebrant" type="text" placeholder="Celebrant: Fr. First Last">
     <input id="liturgical-season" type="text" placeholder="Advent/Ordinary Time/etc.">
@@ -18,12 +18,22 @@
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
         let dayOfWeek = enterDay.value.toLowerCase();
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        enterDate.addEventListener('change', function(){
+            console.log(enterDate.value);
+        })
+
+        console.log(typeof dayOfWeek);
         console.log(dayOfWeek);
         let newTemplate = document.getElementById('new-template');
         let liturgicalWeek = document.getElementById('liturgical-week');
         let liturgicalSeason = document.getElementById('liturgical-season');
         let celebrant = document.getElementById('celebrant');
         let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');
+        enterDay.addEventListener('change', function(){
+            dayOfWeek = enterDay.value.toLowerCase();
+            console.log(dayOfWeek);
+        })
         function makeTemplate(){
             console.log(
         `
@@ -41,7 +51,7 @@
                 </span>
             </em>
         </p>
-        <div id="${enterDay.value}Morning" style="text-align: center; background-image:url('/sites/default/files/files/8_1%20Sunday%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
+        <div id="${enterDay.value}Morning" style="text-align: center; background-image:url('/sites/default/files/files/8${enterDateMonth}_${enterDateDay}1%20${enterDay.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
             <iframe id="saturdayMorningIframe" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
         </div>
         <div>
@@ -74,7 +84,7 @@
     </div>
     <hr>
     <script>
-        let saturdayAMiFrame = document.getElementById("saturdayMorningIframe");
+        let ${enterDay.value}saturdayAMiFrame = document.getElementById("saturdayMorningIframe");
         let saturdayAM = document.getElementById("saturdayMorning");
         var saturdayDate = new Date();
         var saturdayMth = saturdayDate.getMonth() + 1;
