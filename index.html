@@ -7,52 +7,79 @@
 </head>
 <body>
     <button id="new-template">Make New Template</button>
-    <input id="enter-day" type="text" placeholder="Day: Monday">
     <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
+    <input id="enter-day" type="text" placeholder="Day: Monday">
     <input id="liturgical-week" type="text" placeholder="Liturgical Week: 18th">
-    <input id="celebrant" type="text" placeholder="Celebrant: Fr. First Last">
+    <input id="celebrant" type="text" placeholder="Celebrant: First Last">
     <input id="liturgical-season" type="text" placeholder="Advent/Ordinary Time/etc.">
     <input id="enter-embed-code-facebook" type="text" placeholder="ends in 2F">
+    <div id="hidden-element"></div>
     
     <script>
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
-        let dayOfWeek = enterDay.value.toLowerCase();
+        let streamStartHour, // either do another input or have this based off of day of week
+        streamStartMinute; // either do another input or have this based off of day of week, if input possibly doing a time input.
+        //Make a block of text for the Mass streaming announcement and display the proper announcement depending on the day of the week ie saturday vs weekday
+        //need to change the naming convention for Sunday Mass jpg, or set up a rule so that displays as Sunday, vs input of Saturday.
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        let enterDateYear,
+        enterDateDate,
+        enterDateMonth,
+        dayOfWeek,
+        enterDateObjectMonth,
+        enterDateObjectDay,
+        enterDateObjectDayOfWeek,
+        displayDate;
         enterDate.addEventListener('change', function(){
             console.log(enterDate.value);
         })
-
-        console.log(typeof dayOfWeek);
-        console.log(dayOfWeek);
         let newTemplate = document.getElementById('new-template');
-        let liturgicalWeek = document.getElementById('liturgical-week');
-        let liturgicalSeason = document.getElementById('liturgical-season');
-        let celebrant = document.getElementById('celebrant');
-        let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');
-        enterDay.addEventListener('change', function(){
-            dayOfWeek = enterDay.value.toLowerCase();
+        let liturgicalWeek = document.getElementById('liturgical-week'); //i.e. 18th
+        let liturgicalSeason = document.getElementById('liturgical-season'); //i.e. Ordinary Time/Advent/Lent/Easter
+        let celebrant = document.getElementById('celebrant');//Fr. First Last
+        let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
+        function enterDateUpdater(){
+            enterDateYear = enterDate.value.split("-")[0]; // ex. 2020
+            enterDateDate = enterDate.value.split("-")[2];
+            enterDateMonth = enterDate.value.split("-")[1]; //ex. 08 (for august, leading zero)
+            displayDate = enterDateObjectMonth + "/" + enterDateDate + "/" + enterDateYear;
+            let enterDateObject = new Date(enterDateYear, enterDateMonth - 1, enterDateDate);
+            console.log(enterDateObject);
+            enterDateObjectMonth = enterDateObject.getMonth() + 1;
+            enterDateObjectDay = enterDateObject.getDate();
+            enterDateObjectDayOfWeek = enterDateObject.getDay();
+            dayOfWeek = daysOfWeek[enterDateObjectDayOfWeek].toLowerCase();//lowercase day of week
+            enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
             console.log(dayOfWeek);
-        })
+        };
+        enterDate.addEventListener('change', function(){
+            enterDateUpdater();
+        });
         function makeTemplate(){
-            console.log(
-        `
-        <div style="text-align: center;">
+            enterDateUpdater();
+            console.log(enterDateYear); //expected output ex. 2020
+            console.log(enterDateDate); //expected output ex. 03 (day of month, leading zero)
+            console.log(enterDateMonth); //expected output ex. 08 (Aug. in this example, leading zero)
+            console.log(dayOfWeek);
+            console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
+            console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
+            var template = `<div style="text-align: center;">
         <h1>Join Us For:</h1>
-        <p>${enterDate.value} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason}</p>
+        <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
         
         
-        <em style="font-size: 14px;">Celebrant: ${celebrant.value}</em>
+        <em style="font-size: 14px;">Celebrant: Fr. ${celebrant.value}</em>
         
         <p style="margin: 0px;">
             <em style="font-size: 14px;">
                 <span style="color:#ff0000;">
-                    For ${enterDay.value} ${enterDate.value}<br> organ prelude begins shortly before Mass starts at 5:15 PM
+                    For ${enterDay.value} ${displayDate}<br> organ prelude begins shortly before Mass starts at 5:15 PM
                 </span>
             </em>
         </p>
-        <div id="${enterDay.value}Morning" style="text-align: center; background-image:url('/sites/default/files/files/8${enterDateMonth}_${enterDateDay}1%20${enterDay.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
-            <iframe id="saturdayMorningIframe" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+        <div id="${dayOfWeek}Morning" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
+            <iframe id="${dayOfWeek}MorningIframe" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
         </div>
         <div>
             <p style="margin: 0px;">
@@ -84,74 +111,48 @@
     </div>
     <hr>
     <script>
-        let ${enterDay.value}saturdayAMiFrame = document.getElementById("saturdayMorningIframe");
-        let saturdayAM = document.getElementById("saturdayMorning");
-        var saturdayDate = new Date();
-        var saturdayMth = saturdayDate.getMonth() + 1;
-        var saturdayDy = saturdayDate.getDate();
-        var saturdayHr = saturdayDate.getHours();
-        var saturdayMin = saturdayDate.getMinutes();
-        var saturdaySec = saturdayDate.getSeconds();
-        saturdayMth = (saturdayMth < 10 ? "0" : "") + saturdayMth;
-        saturdayDy = (saturdayDy < 10 ? "0" : "") + saturdayDy;
-        saturdayHr = (saturdayHr < 10 ? "0" : "") + saturdayHr;
-        saturdayMin = (saturdayMin < 10 ? "0" : "") + saturdayMin;
-        saturdaySec = (saturdaySec < 10 ? "0" : "") + saturdaySec;
-        var saturdayStr = saturdayMth + "-" + saturdayDy + " " +  saturdayHr + ":" + saturdayMin;
-        saturdayMonth = "08";
-        saturdayDay = "01";
-        saturdayHour = "17";
-        saturdayMinutes = "09";
-        var saturdayInputStr = saturdayMonth + "-" + saturdayDay + " " + saturdayHour + ":" + saturdayMinutes;
-        saturdayGetFormattedDate();
-        function saturdayGetFormattedDate(){
-            if (saturdayStr < saturdayInputStr){
-                saturdayAMiFrame.style.visibility = "hidden";
+        let ${dayOfWeek}AMiFrame = document.getElementById("saturdayMorningIframe");
+        let ${dayOfWeek}AM = document.getElementById("${dayOfWeek}Morning");
+        var ${dayOfWeek}Date = new Date();
+        var ${dayOfWeek}Mth = ${dayOfWeek}Date.getMonth() + 1;
+        var ${dayOfWeek}Dy = ${dayOfWeek}Date.getDate();
+        var ${dayOfWeek}Hr = ${dayOfWeek}Date.getHours();
+        var ${dayOfWeek}Min = ${dayOfWeek}Date.getMinutes();
+        var ${dayOfWeek}Sec = ${dayOfWeek}Date.getSeconds();
+        ${dayOfWeek}Mth = (${dayOfWeek}Mth < 10 ? "0" : "") + ${dayOfWeek}Mth;
+        ${dayOfWeek}Dy = (${dayOfWeek}Dy < 10 ? "0" : "") + ${dayOfWeek}Dy;
+        ${dayOfWeek}Hr = (${dayOfWeek}Hr < 10 ? "0" : "") + ${dayOfWeek}Hr;
+        ${dayOfWeek}Min = (${dayOfWeek}Min < 10 ? "0" : "") + ${dayOfWeek}Min;
+        ${dayOfWeek}Sec = (${dayOfWeek}Sec < 10 ? "0" : "") + ${dayOfWeek}Sec;
+        var ${dayOfWeek}Str = ${dayOfWeek}Mth + "-" + ${dayOfWeek}Dy + " " +  ${dayOfWeek}Hr + ":" + ${dayOfWeek}Min;
+        ${dayOfWeek}Month = "${enterDateMonth}";
+        ${dayOfWeek}Day = "${enterDateDate}";
+        ${dayOfWeek}Hour = "${streamStartHour}";
+        ${dayOfWeek}Minutes = "${streamStartMinute}";
+        var ${dayOfWeek}InputStr = ${dayOfWeek}Month + "-" + ${dayOfWeek}Day + " " + ${dayOfWeek}Hour + ":" + ${dayOfWeek}Minutes;
+        ${dayOfWeek}GetFormattedDate();
+        function ${dayOfWeek}GetFormattedDate(){
+            if (${dayOfWeek}Str < ${dayOfWeek}InputStr){
+                ${dayOfWeek}AMiFrame.style.visibility = "hidden";
                 console.log("hide iframe");
             } else {
-                saturdayAMiFrame.style.visibility = "visible";
-                saturdayAM.style.backgroundImage = "none";
+                ${dayOfWeek}AMiFrame.style.visibility = "visible";
+                ${dayOfWeek}AM.style.backgroundImage = "none";
                 console.log("show iframe");
             }
         }
-    <\/script>`
-        );
-        }
+    <\/script>`;
+        
+            let hiddenElement = document.getElementById('hidden-element');
+            hiddenElement.insertAdjacentHTML('afterend', template);
+}
+
+
         
         newTemplate.addEventListener('click', function(){
             makeTemplate();
         });
 
-        // let saturdayAMiFrame = document.getElementById("saturdayMorningIframe");
-        // let saturdayAM = document.getElementById("saturdayMorning");
-        // var saturdayDate = new Date();
-        // var saturdayMth = saturdayDate.getMonth() + 1;
-        // var saturdayDy = saturdayDate.getDate();
-        // var saturdayHr = saturdayDate.getHours();
-        // var saturdayMin = saturdayDate.getMinutes();
-        // var saturdaySec = saturdayDate.getSeconds();
-        // saturdayMth = (saturdayMth < 10 ? "0" : "") + saturdayMth;
-        // saturdayDy = (saturdayDy < 10 ? "0" : "") + saturdayDy;
-        // saturdayHr = (saturdayHr < 10 ? "0" : "") + saturdayHr;
-        // saturdayMin = (saturdayMin < 10 ? "0" : "") + saturdayMin;
-        // saturdaySec = (saturdaySec < 10 ? "0" : "") + saturdaySec;
-        // var saturdayStr = saturdayMth + "-" + saturdayDy + " " +  saturdayHr + ":" + saturdayMin;
-        // saturdayMonth = "08";
-        // saturdayDay = "01";
-        // saturdayHour = "17";
-        // saturdayMinutes = "09";
-        // var saturdayInputStr = saturdayMonth + "-" + saturdayDay + " " + saturdayHour + ":" + saturdayMinutes;
-        // saturdayGetFormattedDate();
-        // function saturdayGetFormattedDate(){
-        //     if (saturdayStr < saturdayInputStr){
-        //         saturdayAMiFrame.style.visibility = "hidden";
-        //         console.log("hide iframe");
-        //     } else {
-        //         saturdayAMiFrame.style.visibility = "visible";
-        //         saturdayAM.style.backgroundImage = "none";
-        //         console.log("show iframe");
-        //     }
-        // }
     </script>
 </body>
 </html>
