@@ -18,8 +18,8 @@
     <script>
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
-        let streamStartHour, // either do another input or have this based off of day of week
-        streamStartMinute; // either do another input or have this based off of day of week, if input possibly doing a time input.
+        let streamStartHour = '07', // either do another input or have this based off of day of week
+        streamStartMinute = '29'; // either do another input or have this based off of day of week, if input possibly doing a time input.
         //Make a block of text for the Mass streaming announcement and display the proper announcement depending on the day of the week ie saturday vs weekday
         //need to change the naming convention for Sunday Mass jpg, or set up a rule so that displays as Sunday, vs input of Saturday.
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -43,15 +43,25 @@
             enterDateYear = enterDate.value.split("-")[0]; // ex. 2020
             enterDateDate = enterDate.value.split("-")[2];
             enterDateMonth = enterDate.value.split("-")[1]; //ex. 08 (for august, leading zero)
-            displayDate = enterDateObjectMonth + "/" + enterDateDate + "/" + enterDateYear;
+            displayDate = enterDateObjectMonth + "/" + enterDateObjectDay + "/" + enterDateYear;
             let enterDateObject = new Date(enterDateYear, enterDateMonth - 1, enterDateDate);
             console.log(enterDateObject);
             enterDateObjectMonth = enterDateObject.getMonth() + 1;
-            enterDateObjectDay = enterDateObject.getDate();
-            enterDateObjectDayOfWeek = enterDateObject.getDay();
+            enterDateObjectDay = enterDateObject.getDate();//no leading zero
+            enterDateObjectDayOfWeek = enterDateObject.getDay();//0-6
             dayOfWeek = daysOfWeek[enterDateObjectDayOfWeek].toLowerCase();//lowercase day of week
             enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
-            console.log(dayOfWeek);
+            console.log(enterDay.value);
+        let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude starts shortly before the start of Mass at 5:15 PM` ;
+        let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
+            if (enterDay.value == 'Saturday') {
+                announcementBlock = saturdayAnnouncementBlock;
+                streamStartHour = '17';
+                streamStartMinute = '09';//pass in a string with leading zero if you want to keep the leading zero
+            } else {
+                announcementBlock = weekdayAnnouncementBlock;
+
+            }
         };
         enterDate.addEventListener('change', function(){
             enterDateUpdater();
@@ -74,7 +84,7 @@
         <p style="margin: 0px;">
             <em style="font-size: 14px;">
                 <span style="color:#ff0000;">
-                    For ${enterDay.value} ${displayDate}<br> organ prelude begins shortly before Mass starts at 5:15 PM
+                    ${announcementBlock}
                 </span>
             </em>
         </p>
