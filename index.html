@@ -7,6 +7,7 @@
 </head>
 <body>
     <button id="new-template">Make New Template</button>
+    <button id="copy-text">Copy Text</button>
     <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
     <input id="enter-day" type="text" placeholder="Day: Monday">
     <input id="liturgical-week" type="text" placeholder="Liturgical Week: 18th">
@@ -16,10 +17,45 @@
     <div id="hidden-element"></div>
     
     <script>
+        let copyText = document.getElementById('copy-text');
+        function copyTextToClipboard(text){
+            var textArea = document.createElement("textarea");
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = 0;
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+                console.log('Copying text command was ' + msg);
+                console.log(text);
+                console.log(typeof text);
+            } catch (error) {
+                console.log('Ope, unable to copy!');
+            }
+            document.body.removeChild(textArea);
+        }
+        copyText.addEventListener('click', function(){
+            copyTextToClipboard(template);
+        });
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
         let streamStartHour = '07', // either do another input or have this based off of day of week
         streamStartMinute = '29'; // either do another input or have this based off of day of week, if input possibly doing a time input.
+        weekendFacebookEmbed = 'https://www.facebook.com/watch/200206761419/170745247224514/'; //Sunday Masses playlist - facebook
+        weekdayFacebookEmbed = 'https://www.facebook.com/watch/200206761419/305351103761003/'; //Daily Masses playlist - facebook
+        weekendYoutubeEmbed = 'https://www.youtube.com/watch?v=fm9iA-YXvVw&list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO'; //Sunday Masses playlist - youtube
+        weekdayYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLj7ST6XUszihIdZUUOzuSD1'; //Daily Masses playlist - youtube
         //Make a block of text for the Mass streaming announcement and display the proper announcement depending on the day of the week ie saturday vs weekday
         //need to change the naming convention for Sunday Mass jpg, or set up a rule so that displays as Sunday, vs input of Saturday.
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -30,7 +66,8 @@
         enterDateObjectMonth,
         enterDateObjectDay,
         enterDateObjectDayOfWeek,
-        displayDate;
+        displayDate,
+        template;
         enterDate.addEventListener('change', function(){
             console.log(enterDate.value);
         })
@@ -41,14 +78,18 @@
         let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
         function enterDateUpdater(){
             enterDateYear = enterDate.value.split("-")[0]; // ex. 2020
-            enterDateDate = enterDate.value.split("-")[2];
+            enterDateYearShort = enterDate.value.split("-")[0].slice(-2); // ex. 2020
             enterDateMonth = enterDate.value.split("-")[1]; //ex. 08 (for august, leading zero)
-            displayDate = enterDateObjectMonth + "/" + enterDateObjectDay + "/" + enterDateYear;
+            enterDateDate = enterDate.value.split("-")[2];// ex. 03(for the third, leading zero)
+            displayDate = enterDateObjectMonth + "/" + enterDateObjectDay + "/" + enterDateYearShort;
             let enterDateObject = new Date(enterDateYear, enterDateMonth - 1, enterDateDate);
             console.log(enterDateObject);
-            enterDateObjectMonth = enterDateObject.getMonth() + 1;
+            console.log(enterDateDate);
+            enterDateObjectMonth = enterDateObject.getMonth() + 1;// add one
+            console.log(enterDateObjectMonth);
             enterDateObjectDay = enterDateObject.getDate();//no leading zero
             enterDateObjectDayOfWeek = enterDateObject.getDay();//0-6
+            console.log(enterDateObjectDayOfWeek);
             dayOfWeek = daysOfWeek[enterDateObjectDayOfWeek].toLowerCase();//lowercase day of week
             enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
             console.log(enterDay.value);
@@ -58,8 +99,14 @@
                 announcementBlock = saturdayAnnouncementBlock;
                 streamStartHour = '17';
                 streamStartMinute = '09';//pass in a string with leading zero if you want to keep the leading zero
+                facebookEmbed = weekendFacebookEmbed;
+                youtubeEmbed = weekendYoutubeEmbed;
+                bulletinAnnouncement = `<br>Liturgy guide/bulletin here:<br>http://www.cathedralsaintpaul.org/bulletin<br>`;
             } else {
                 announcementBlock = weekdayAnnouncementBlock;
+                facebookEmbed = weekdayFacebookEmbed;
+                youtubeEmbed = weekdayYoutubeEmbed;
+                bulletinAnnouncement = '';
 
             }
         };
@@ -74,7 +121,26 @@
             console.log(dayOfWeek);
             console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
             console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
-            var template = `<div style="text-align: center;">
+            var template = `
+        <h1>Facebook Text</h1>
+            ${displayDate} Mass for ${enterDay.value} in the ${liturgicalWeek.value} Week in ${liturgicalSeason.value},<br> Cathedral of Saint Paul, St. Paul, MN<br>
+            Celebrant: Fr. John Ubel<br>
+            Support the Cathedral here:<br>
+            https://www.cathedralsaintpaul.org/give<br>
+            ${bulletinAnnouncement}
+            Mass readings available free from Magnificat<br>
+            English: www.magnificat.com/free<br>
+            Spanish: www.magnificat.com/gratis<br>
+            For children: www.magnifikid.com/free<br>
+            <br>
+            An Act of Spiritual Communion:<br>
+            My Jesus, I believe that You are present in the Most Holy Sacrament.<br>
+            I love You above all things, and I desire to receive You into<br>
+            my soul. Since I cannot at this moment receive You sacramentally,<br>
+            come at least spiritually into my heart. I embrace You as if You<br>
+            were already there and unite myself wholly to You. Never permit<br>
+            me to be separated from You. Amen
+        <div style="text-align: center;">
         <h1>Join Us For:</h1>
         <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
         
@@ -93,7 +159,7 @@
         </div>
         <div>
             <p style="margin: 0px;">
-                <em>Note: After initial streaming, Mass will be available on Facebook <a href="https://www.facebook.com/watch/cathedralsaintpaul/170745247224514/" target="_blank">here</a> & YouTube <a href="https://www.youtube.com/playlist?list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO" target="_blank">here</a>.
+                <em>Note: After initial streaming, Mass will be available on Facebook <a href="${facebookEmbed}" target="_blank">here</a> & YouTube <a href="${youtubeEmbed}" target="_blank">here</a>.
                 </em>
             </p>
             <p style="margin:0px">
@@ -154,6 +220,7 @@
     <\/script>`;
         
             let hiddenElement = document.getElementById('hidden-element');
+            console.log(template);
             hiddenElement.insertAdjacentHTML('afterend', template);
 }
 
