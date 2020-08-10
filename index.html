@@ -3,21 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saturday Evening Mass</title>
+    <title>Mass Template Maker</title>
 </head>
 <body>
     <button id="new-template">Make New Template</button>
-    <button id="copy-text">Copy Text</button>
+    <button id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
+    <button id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
+    <br>
     <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
-    <input id="enter-day" type="text" placeholder="Day: Monday">
-    <input id="liturgical-week" type="text" placeholder="Liturgical Week: 18th">
-    <input id="celebrant" type="text" placeholder="Celebrant: First Last">
-    <input id="liturgical-season" type="text" placeholder="Advent/Ordinary Time/etc.">
+    <select id="liturgical-week" name="Liturgical Week">
+        <option selected="selected" value="">Liturgical Week</option>
+        <option value="1st">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="4">4th</option>
+        <option value="5">5th</option>
+        <option value="6">6th</option>
+        <option value="7">7th</option>
+        <option value="8">8th</option>
+        <option value="9">9th</option>
+        <option value="10">10th</option>
+        <option value="11">11th</option>
+        <option value="12">12th</option>
+        <option value="13">13th</option>
+        <option value="14">14th</option>
+        <option value="15">15th</option>
+        <option value="16">16th</option>
+        <option value="17">17th</option>
+        <option value="18">18th</option>
+        <option value="19">19th</option>
+        <option value="20">20th</option>
+        <option value="21">21st</option>
+        <option value="22">22nd</option>
+        <option value="23">23rd</option>
+        <option value="24">24th</option>
+        <option value="25">25th</option>
+        <option value="26">26th</option>
+        <option value="27">27th</option>
+        <option value="28">28th</option>
+        <option value="29">29th</option>
+        <option value="30">30th</option>
+        <option value="31">31st</option>
+        <option value="32">32nd</option>
+        <option value="33">33rd</option>
+        <option value="34">34th</option>
+    </select>
+    <select id="celebrant" name="Celebrant Options" >
+        <option selected="selected" value="">Celebrant:</option>
+        <option value="Fr. John Ubel">Fr. John Ubel</option>
+        <option value="Fr. Joseph Bambenek">Fr. Joseph Bambenek</option>
+        <option value="Fr. Mark Pavlak">Fr. Mark Pavlak</option>
+        <option value="Archbishop Bernard Hebda">Archbishop Bernard Hebda</option>
+        <option value="Other">Other</option>
+    </select>
+    
+    <input id="celebrant-text-input" type="text" placeholder="Fr. First Last" style="visibility: collapse; display: none;">
+    <select id="liturgical-season">
+        <option selected="selected" value="">Liturgical Season</option>
+        <option value="Advent">Advent</option>
+        <option value="Christmas">Christmas</option>
+        <option value="Ordinary Time">Ordinary Time</option>
+        <option value="Lent">Lent</option>
+        <option value="Easter">Easter</option>
+    </select>
     <input id="enter-embed-code-facebook" type="text" placeholder="ends in 2F">
+    <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
     <div id="hidden-element"></div>
     
     <script>
-        let copyText = document.getElementById('copy-text');
+        let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
+        let copyWebsiteCodeButton = document.getElementById('copy-website-code-button');
+        let facebookText = "asdf";
+        let websiteCode = "asdf";
         function copyTextToClipboard(text){
             var textArea = document.createElement("textarea");
             textArea.style.position = 'fixed';
@@ -38,15 +95,18 @@
                 var successful = document.execCommand('copy');
                 var msg = successful ? 'successful' : 'unsuccessful';
                 console.log('Copying text command was ' + msg);
-                console.log(text);
+                console.log(text.value);
                 console.log(typeof text);
             } catch (error) {
                 console.log('Ope, unable to copy!');
             }
             document.body.removeChild(textArea);
         }
-        copyText.addEventListener('click', function(){
-            copyTextToClipboard(template);
+        copyWebsiteCodeButton.addEventListener('click', function(){
+            copyTextToClipboard(websiteCode);
+        })
+        copyFacebookTextButton.addEventListener('click', function(){
+            copyTextToClipboard(facebookText);
         });
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
@@ -70,11 +130,26 @@
         template;
         enterDate.addEventListener('change', function(){
             console.log(enterDate.value);
-        })
+            enterDay.style.visibility = "visible";
+            enterDay.style.display = "inline";
+        });
         let newTemplate = document.getElementById('new-template');
         let liturgicalWeek = document.getElementById('liturgical-week'); //i.e. 18th
         let liturgicalSeason = document.getElementById('liturgical-season'); //i.e. Ordinary Time/Advent/Lent/Easter
         let celebrant = document.getElementById('celebrant');//Fr. First Last
+        let celebrantTextInput = document.getElementById('celebrant-text-input');
+        let displayCelebrant = celebrant.value;
+        
+        celebrant.addEventListener('change', function(){
+            if (celebrant.value == "Other"){
+                celebrantTextInput.style.visibility = "visible";
+                celebrantTextInput.style.display = "inline";
+                celebrantTextInput.addEventListener('change', function(){
+                displayCelebrant = celebrantTextInput.value;
+                console.log(displayCelebrant);
+                });
+            };
+        });
         let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
         function enterDateUpdater(){
             enterDateYear = enterDate.value.split("-")[0]; // ex. 2020
@@ -115,117 +190,121 @@
         });
         function makeTemplate(){
             enterDateUpdater();
+            copyFacebookTextButton.style.visibility = 'visible';
+            copyWebsiteCodeButton.style.visibility = 'visible';
             console.log(enterDateYear); //expected output ex. 2020
             console.log(enterDateDate); //expected output ex. 03 (day of month, leading zero)
             console.log(enterDateMonth); //expected output ex. 08 (Aug. in this example, leading zero)
             console.log(dayOfWeek);
             console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
             console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
-            var template = `
-        <h1>Facebook Text</h1>
-            ${displayDate} Mass for ${enterDay.value} in the ${liturgicalWeek.value} Week in ${liturgicalSeason.value},<br> Cathedral of Saint Paul, St. Paul, MN <br>
-            Celebrant: Fr. John Ubel<br>
-            Support the Cathedral here:<br>
-            https://www.cathedralsaintpaul.org/give<br>
-            ${bulletinAnnouncement}
-            Mass readings available free from Magnificat<br>
-            English: www.magnificat.com/free<br>
-            Spanish: www.magnificat.com/gratis<br>
-            For children: www.magnifikid.com/free<br>
-            <br>
-            An Act of Spiritual Communion:<br>
-            My Jesus, I believe that You are present in the Most Holy Sacrament.<br>
-            I love You above all things, and I desire to receive You into<br>
-            my soul. Since I cannot at this moment receive You sacramentally,<br>
-            come at least spiritually into my heart. I embrace You as if You<br>
-            were already there and unite myself wholly to You. Never permit<br>
-            me to be separated from You. Amen
-        <div style="text-align: center;">
-        <h1>Join Us For:</h1>
-        <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
-        
-        
-        <em style="font-size: 14px;">Celebrant: Fr. ${celebrant.value}</em>
-        <div id="${dayOfWeek}-announcement">
-            <p style="margin: 0px;">
-                <em style="font-size: 14px;">
-                    <span style="color:#ff0000;">
-                        ${announcementBlock}
-                    </span>
-                </em>
-            </p>
-        </div>    
-        <div id="${dayOfWeek}Morning" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
-            <iframe id="${dayOfWeek}MorningIframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
-        </div>
-        <div>
-            <p style="margin: 0px;">
-                <em>Note: After initial streaming, Mass will be available on Facebook <a href="${facebookEmbed}" target="_blank">here</a> & YouTube <a href="${youtubeEmbed}" target="_blank">here</a>.
-                </em>
-            </p>
-            <p style="margin:0px">
-                Mass readings available at a reduced subscription from Magnificat:
-            </p>
-            <ul style="list-style-type: none; margin-top: 0px;">
-                <li>
-                    <a href="https://us.magnificat.net/free" target="_blank">
-                        English
-                    </a>
-                </li>
-                <li>
-                    <a href="https://latina.magnificat.net/gratis" target="_blank">
-                        Spanish
-                    </a>
-                </li>
-                <li>
-                    <a href="https://us.magnificat.net/flipbook/KID/sample/" target="_blank">
-                        For Children
-                    </a>
-                </li>
-            </ul>
-        </div>
-        
-    </div>
-    <hr>
-    <script>
-        let ${dayOfWeek}AMAnnouncement = document.getElementById("${dayOfWeek}-announcement");
-        let ${dayOfWeek}AMiFrame = document.getElementById("${dayOfWeek}MorningIframe");
-        let ${dayOfWeek}AM = document.getElementById("${dayOfWeek}Morning");
-        let ${dayOfWeek}AMTimeChecker = setInterval(${dayOfWeek}GetFormattedDate, 1000);
-        function ${dayOfWeek}GetFormattedDate(){
-            var ${dayOfWeek}Date = new Date();
-            var ${dayOfWeek}Mth = ${dayOfWeek}Date.getMonth() + 1;
-            var ${dayOfWeek}Dy = ${dayOfWeek}Date.getDate();
-            var ${dayOfWeek}Hr = ${dayOfWeek}Date.getHours();
-            var ${dayOfWeek}Min = ${dayOfWeek}Date.getMinutes();
-            var ${dayOfWeek}Sec = ${dayOfWeek}Date.getSeconds();
-            ${dayOfWeek}Mth = (${dayOfWeek}Mth < 10 ? "0" : "") + ${dayOfWeek}Mth;
-            ${dayOfWeek}Dy = (${dayOfWeek}Dy < 10 ? "0" : "") + ${dayOfWeek}Dy;
-            ${dayOfWeek}Hr = (${dayOfWeek}Hr < 10 ? "0" : "") + ${dayOfWeek}Hr;
-            ${dayOfWeek}Min = (${dayOfWeek}Min < 10 ? "0" : "") + ${dayOfWeek}Min;
-            ${dayOfWeek}Sec = (${dayOfWeek}Sec < 10 ? "0" : "") + ${dayOfWeek}Sec;
-            var ${dayOfWeek}Str = ${dayOfWeek}Mth + "-" + ${dayOfWeek}Dy + " " +  ${dayOfWeek}Hr + ":" + ${dayOfWeek}Min;
-            ${dayOfWeek}Month = "${enterDateMonth}";
-            ${dayOfWeek}Day = "${enterDateDate}";
-            ${dayOfWeek}Hour = "${streamStartHour}";
-            ${dayOfWeek}Minutes = "${streamStartMinute}";
-            var ${dayOfWeek}InputStr = ${dayOfWeek}Month + "-" + ${dayOfWeek}Day + " " + ${dayOfWeek}Hour + ":" + ${dayOfWeek}Minutes;
-            if (${dayOfWeek}Str < ${dayOfWeek}InputStr){
-                ${dayOfWeek}AMiFrame.style.visibility = "hidden";
-                console.log("hide iframe");
-                console.log(${dayOfWeek}Str)
-                console.log(${dayOfWeek}InputStr)
-            } else {
-                ${dayOfWeek}AMiFrame.style.visibility = "visible";
-                ${dayOfWeek}AM.style.backgroundImage = "none";
-                console.log("show iframe");
-                ${dayOfWeek}AMAnnouncement.style.visibility = "hidden";
-                clearInterval(${dayOfWeek}AMTimeChecker);
-            }
+            facebookText = `<h1>Facebook Text</h1>
+                ${displayDate} Mass for ${enterDay.value} in the ${liturgicalWeek.value} Week in ${liturgicalSeason.value},<br> Cathedral of Saint Paul, St. Paul, MN <br>
+                Celebrant: ${displayCelebrant}<br>
+                Support the Cathedral here:<br>
+                https://www.cathedralsaintpaul.org/give<br>
+                ${bulletinAnnouncement}
+                Mass readings available free from Magnificat<br>
+                English: www.magnificat.com/free<br>
+                Spanish: www.magnificat.com/gratis<br>
+                For children: www.magnifikid.com/free<br>
+                <br>
+                An Act of Spiritual Communion:<br>
+                My Jesus, I believe that You are present in the Most Holy Sacrament.<br>
+                I love You above all things, and I desire to receive You into<br>
+                my soul. Since I cannot at this moment receive You sacramentally,<br>
+                come at least spiritually into my heart. I embrace You as if You<br>
+                were already there and unite myself wholly to You. Never permit<br>
+                me to be separated from You. Amen`;
+            websiteCode = `
+                <div style="text-align: center;">        
+                <h1>Join Us For:</h1>
+                <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
+                
+                
+                <em style="font-size: 14px;">Celebrant: ${displayCelebrant}</em>
+                <div id="${dayOfWeek}-announcement">
+                    <p style="margin: 0px;">
+                        <em style="font-size: 14px;">
+                            <span style="color:#ff0000;">
+                                ${announcementBlock}
+                            </span>
+                        </em>
+                    </p>
+                </div>    
+                <div id="${dayOfWeek}Morning" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
+                    <iframe id="${dayOfWeek}MorningIframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+                </div>
+                <div>
+                    <p style="margin: 0px;">
+                        <em>Note: After initial streaming, Mass will be available on Facebook <a href="${facebookEmbed}" target="_blank">here</a> & YouTube <a href="${youtubeEmbed}" target="_blank">here</a>.
+                        </em>
+                    </p>
+                    <p style="margin:0px">
+                        Mass readings available at a reduced subscription from Magnificat:
+                    </p>
+                    <ul style="list-style-type: none; margin-top: 0px;">
+                        <li>
+                            <a href="https://us.magnificat.net/free" target="_blank">
+                                English
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://latina.magnificat.net/gratis" target="_blank">
+                                Spanish
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://us.magnificat.net/flipbook/KID/sample/" target="_blank">
+                                For Children
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+            <hr>
+            <script>
+                let ${dayOfWeek}AMAnnouncement = document.getElementById("${dayOfWeek}-announcement");
+                let ${dayOfWeek}AMiFrame = document.getElementById("${dayOfWeek}MorningIframe");
+                let ${dayOfWeek}AM = document.getElementById("${dayOfWeek}Morning");
+                let ${dayOfWeek}AMTimeChecker = setInterval(${dayOfWeek}GetFormattedDate, 1000);
+                function ${dayOfWeek}GetFormattedDate(){
+                    var ${dayOfWeek}Date = new Date();
+                    var ${dayOfWeek}Mth = ${dayOfWeek}Date.getMonth() + 1;
+                    var ${dayOfWeek}Dy = ${dayOfWeek}Date.getDate();
+                    var ${dayOfWeek}Hr = ${dayOfWeek}Date.getHours();
+                    var ${dayOfWeek}Min = ${dayOfWeek}Date.getMinutes();
+                    var ${dayOfWeek}Sec = ${dayOfWeek}Date.getSeconds();
+                    ${dayOfWeek}Mth = (${dayOfWeek}Mth < 10 ? "0" : "") + ${dayOfWeek}Mth;
+                    ${dayOfWeek}Dy = (${dayOfWeek}Dy < 10 ? "0" : "") + ${dayOfWeek}Dy;
+                    ${dayOfWeek}Hr = (${dayOfWeek}Hr < 10 ? "0" : "") + ${dayOfWeek}Hr;
+                    ${dayOfWeek}Min = (${dayOfWeek}Min < 10 ? "0" : "") + ${dayOfWeek}Min;
+                    ${dayOfWeek}Sec = (${dayOfWeek}Sec < 10 ? "0" : "") + ${dayOfWeek}Sec;
+                    var ${dayOfWeek}Str = ${dayOfWeek}Mth + "-" + ${dayOfWeek}Dy + " " +  ${dayOfWeek}Hr + ":" + ${dayOfWeek}Min;
+                    ${dayOfWeek}Month = "${enterDateMonth}";
+                    ${dayOfWeek}Day = "${enterDateDate}";
+                    ${dayOfWeek}Hour = "${streamStartHour}";
+                    ${dayOfWeek}Minutes = "${streamStartMinute}";
+                    var ${dayOfWeek}InputStr = ${dayOfWeek}Month + "-" + ${dayOfWeek}Day + " " + ${dayOfWeek}Hour + ":" + ${dayOfWeek}Minutes;
+                    if (${dayOfWeek}Str < ${dayOfWeek}InputStr){
+                        ${dayOfWeek}AMiFrame.style.visibility = "hidden";
+                        console.log("hide iframe");
+                        console.log(${dayOfWeek}Str)
+                        console.log(${dayOfWeek}InputStr)
+                    } else {
+                        ${dayOfWeek}AMiFrame.style.visibility = "visible";
+                        ${dayOfWeek}AM.style.backgroundImage = "none";
+                        console.log("show iframe");
+                        ${dayOfWeek}AMAnnouncement.style.visibility = "hidden";
+                        clearInterval(${dayOfWeek}AMTimeChecker);
+                    }
 
-        }
-        
-    <\/script>`;
+                }
+                
+            <\/script>`;
+            var template = `
+            ${facebookText}${websiteCode}`;
         
             let hiddenElement = document.getElementById('hidden-element');
             console.log(template);
@@ -237,7 +316,12 @@
         newTemplate.addEventListener('click', function(){
             makeTemplate();
         });
-
+        myArray = [];
+for (let i = 0; i < 34; i++) {
+    myArray = [];
+    myArray.push(`<option value="${i}">${i}</option>`);
+    
+}
     </script>
 </body>
 </html>
