@@ -146,14 +146,15 @@
         
         
         <em style="font-size: 14px;">Celebrant: Fr. ${celebrant.value}</em>
-        
-        <p style="margin: 0px;">
-            <em style="font-size: 14px;">
-                <span style="color:#ff0000;">
-                    ${announcementBlock}
-                </span>
-            </em>
-        </p>
+        <div id="${dayOfWeek}-announcement">
+            <p style="margin: 0px;">
+                <em style="font-size: 14px;">
+                    <span style="color:#ff0000;">
+                        ${announcementBlock}
+                    </span>
+                </em>
+            </p>
+        </div>    
         <div id="${dayOfWeek}Morning" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
             <iframe id="${dayOfWeek}MorningIframe" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
         </div>
@@ -187,36 +188,43 @@
     </div>
     <hr>
     <script>
+        let ${dayOfWeek}AMAnnouncement = document.getElementById("${dayOfWeek}-announcement");
         let ${dayOfWeek}AMiFrame = document.getElementById("${dayOfWeek}MorningIframe");
         let ${dayOfWeek}AM = document.getElementById("${dayOfWeek}Morning");
-        var ${dayOfWeek}Date = new Date();
-        var ${dayOfWeek}Mth = ${dayOfWeek}Date.getMonth() + 1;
-        var ${dayOfWeek}Dy = ${dayOfWeek}Date.getDate();
-        var ${dayOfWeek}Hr = ${dayOfWeek}Date.getHours();
-        var ${dayOfWeek}Min = ${dayOfWeek}Date.getMinutes();
-        var ${dayOfWeek}Sec = ${dayOfWeek}Date.getSeconds();
-        ${dayOfWeek}Mth = (${dayOfWeek}Mth < 10 ? "0" : "") + ${dayOfWeek}Mth;
-        ${dayOfWeek}Dy = (${dayOfWeek}Dy < 10 ? "0" : "") + ${dayOfWeek}Dy;
-        ${dayOfWeek}Hr = (${dayOfWeek}Hr < 10 ? "0" : "") + ${dayOfWeek}Hr;
-        ${dayOfWeek}Min = (${dayOfWeek}Min < 10 ? "0" : "") + ${dayOfWeek}Min;
-        ${dayOfWeek}Sec = (${dayOfWeek}Sec < 10 ? "0" : "") + ${dayOfWeek}Sec;
-        var ${dayOfWeek}Str = ${dayOfWeek}Mth + "-" + ${dayOfWeek}Dy + " " +  ${dayOfWeek}Hr + ":" + ${dayOfWeek}Min;
-        ${dayOfWeek}Month = "${enterDateMonth}";
-        ${dayOfWeek}Day = "${enterDateDate}";
-        ${dayOfWeek}Hour = "${streamStartHour}";
-        ${dayOfWeek}Minutes = "${streamStartMinute}";
-        var ${dayOfWeek}InputStr = ${dayOfWeek}Month + "-" + ${dayOfWeek}Day + " " + ${dayOfWeek}Hour + ":" + ${dayOfWeek}Minutes;
-        ${dayOfWeek}GetFormattedDate();
+        let ${dayOfWeek}AMTimeChecker = setInterval(${dayOfWeek}GetFormattedDate, 1000);
         function ${dayOfWeek}GetFormattedDate(){
+            var ${dayOfWeek}Date = new Date();
+            var ${dayOfWeek}Mth = ${dayOfWeek}Date.getMonth() + 1;
+            var ${dayOfWeek}Dy = ${dayOfWeek}Date.getDate();
+            var ${dayOfWeek}Hr = ${dayOfWeek}Date.getHours();
+            var ${dayOfWeek}Min = ${dayOfWeek}Date.getMinutes();
+            var ${dayOfWeek}Sec = ${dayOfWeek}Date.getSeconds();
+            ${dayOfWeek}Mth = (${dayOfWeek}Mth < 10 ? "0" : "") + ${dayOfWeek}Mth;
+            ${dayOfWeek}Dy = (${dayOfWeek}Dy < 10 ? "0" : "") + ${dayOfWeek}Dy;
+            ${dayOfWeek}Hr = (${dayOfWeek}Hr < 10 ? "0" : "") + ${dayOfWeek}Hr;
+            ${dayOfWeek}Min = (${dayOfWeek}Min < 10 ? "0" : "") + ${dayOfWeek}Min;
+            ${dayOfWeek}Sec = (${dayOfWeek}Sec < 10 ? "0" : "") + ${dayOfWeek}Sec;
+            var ${dayOfWeek}Str = ${dayOfWeek}Mth + "-" + ${dayOfWeek}Dy + " " +  ${dayOfWeek}Hr + ":" + ${dayOfWeek}Min;
+            ${dayOfWeek}Month = "${enterDateMonth}";
+            ${dayOfWeek}Day = "${enterDateDate}";
+            ${dayOfWeek}Hour = "${streamStartHour}";
+            ${dayOfWeek}Minutes = "${streamStartMinute}";
+            var ${dayOfWeek}InputStr = ${dayOfWeek}Month + "-" + ${dayOfWeek}Day + " " + ${dayOfWeek}Hour + ":" + ${dayOfWeek}Minutes;
             if (${dayOfWeek}Str < ${dayOfWeek}InputStr){
                 ${dayOfWeek}AMiFrame.style.visibility = "hidden";
                 console.log("hide iframe");
+                console.log(${dayOfWeek}Str)
+                console.log(${dayOfWeek}InputStr)
             } else {
                 ${dayOfWeek}AMiFrame.style.visibility = "visible";
                 ${dayOfWeek}AM.style.backgroundImage = "none";
                 console.log("show iframe");
+                ${dayOfWeek}AMAnnouncement.style.visibility = "hidden";
+                clearInterval(${dayOfWeek}AMTimeChecker);
             }
+
         }
+        
     <\/script>`;
         
             let hiddenElement = document.getElementById('hidden-element');
