@@ -275,6 +275,7 @@
                 let ${dayOfWeek}AMAnnouncement = document.getElementById("${dayOfWeek}-announcement");
                 let ${dayOfWeek}AMiFrame = document.getElementById("${dayOfWeek}MorningIframe");
                 let ${dayOfWeek}AM = document.getElementById("${dayOfWeek}Morning");
+                ${dayOfWeek}GetFormattedDate();
                 let ${dayOfWeek}AMTimeChecker = setInterval(${dayOfWeek}GetFormattedDate, 1000);
                 function ${dayOfWeek}GetFormattedDate(){
                     var ${dayOfWeek}Date = new Date();
