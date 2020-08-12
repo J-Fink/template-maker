@@ -297,13 +297,9 @@
                     var ${dayOfWeek}InputStr = ${dayOfWeek}Month + "-" + ${dayOfWeek}Day + " " + ${dayOfWeek}Hour + ":" + ${dayOfWeek}Minutes;
                     if (${dayOfWeek}Str < ${dayOfWeek}InputStr){
                         ${dayOfWeek}AMiFrame.style.visibility = "hidden";
-                        console.log("hide iframe");
-                        console.log(${dayOfWeek}Str)
-                        console.log(${dayOfWeek}InputStr)
                     } else {
                         ${dayOfWeek}AMiFrame.style.visibility = "visible";
                         ${dayOfWeek}AM.style.backgroundImage = "none";
-                        console.log("show iframe");
                         ${dayOfWeek}AMAnnouncement.style.visibility = "hidden";
                         clearInterval(${dayOfWeek}AMTimeChecker);
                     }
