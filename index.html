@@ -107,7 +107,8 @@
             copyTextToClipboard(websiteCode);
         })
         copyFacebookTextButton.addEventListener('click', function(){
-            copyTextToClipboard(facebookText);
+            let facebookCopyText = document.getElementById('facebook-copy-text');
+            copyTextToClipboard(facebookCopyText.innerText);
         });
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
@@ -205,7 +206,9 @@
             console.log(dayOfWeek);
             console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
             console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
-            facebookText = `<h1>Facebook Text</h1>
+            facebookText = `
+                <h1>Facebook Text</h1>
+                <div id="facebook-copy-text">
                 ${displayDate} Mass for ${enterDay.value} in the ${liturgicalWeek.value} Week in ${liturgicalSeason.value},<br> Cathedral of Saint Paul, St. Paul, MN <br>
                 Celebrant: ${displayCelebrant}<br>
                 Support the Cathedral here:<br>
@@ -222,7 +225,7 @@
                 my soul. Since I cannot at this moment receive You sacramentally,<br>
                 come at least spiritually into my heart. I embrace You as if You<br>
                 were already there and unite myself wholly to You. Never permit<br>
-                me to be separated from You. Amen`;
+                me to be separated from You. Amen</div>`;
             websiteCode = `
                 <div style="text-align: center;">        
                 <h1>Join Us For:</h1>
@@ -332,3 +335,4 @@ for (let i = 0; i < 34; i++) {
     </script>
 </body>
 </html>
+
