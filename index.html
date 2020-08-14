@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
-    <button id="new-template">Make New Template</button>
-    <button id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
-    <button id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
+    <button class="btn btn-primary" id="new-template">Make New Template</button>
+    <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
+    <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
     <br>
     <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
     <select id="liturgical-week" name="Liturgical Week">
@@ -104,9 +104,11 @@
             document.body.removeChild(textArea);
         }
         copyWebsiteCodeButton.addEventListener('click', function(){
+            copyWebsiteCodeButton.setAttribute('disabled', '');
             copyTextToClipboard(websiteCode);
         })
         copyFacebookTextButton.addEventListener('click', function(){
+            copyFacebookTextButton.setAttribute('disabled', '');
             let facebookCopyText = document.getElementById('facebook-copy-text');
             copyTextToClipboard(facebookCopyText.innerText);
         });
