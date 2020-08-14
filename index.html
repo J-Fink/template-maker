@@ -49,7 +49,7 @@
         <option value="33rd">33rd</option>
         <option value="34th">34th</option>
     </select>
-    <select id="celebrant" name="Celebrant Options" >
+    <select id="celebrant" name="Celebrant Options">
         <option selected="selected" value="">Celebrant:</option>
         <option value="Fr. John Ubel">Fr. John Ubel</option>
         <option value="Fr. Joseph Bambenek">Fr. Joseph Bambenek</option>
@@ -191,14 +191,21 @@
         };
         enterDate.addEventListener('change', function(){
             enterDateUpdater();
-            enterDate.classList.remove("border", "border-danger");
+            enterDate.classList.remove('border', 'border-danger');
         });
-        function makeTemplate(){
-            if (enterDate.value == ""){
-                // alert("Please enter a date");
-                enterDate.classList.add("border", "border-danger");
-                return 
+        function requiredChecker(input){
+            input.addEventListener('change', function(){
+            input.classList.remove('border', 'border-danger');
+            console.log('border removed');
+        }
+        );
+            if (input.value == ""){
+                input.classList.add("border", "border-danger");
             }
+        }
+        function makeTemplate(){
+            requiredChecker(liturgicalWeek);
+            //ternary operator
             enterDateUpdater();
             copyFacebookTextButton.style.visibility = 'visible';
             copyWebsiteCodeButton.style.visibility = 'visible';
@@ -313,7 +320,9 @@
                 
             <\/script>`;
             var template = `
-            ${facebookText}${websiteCode}`;
+            ${facebookText}
+            <h1>Website Code</h1>
+            ${websiteCode}`;
         
             let hiddenElement = document.getElementById('hidden-element');
             console.log(template);
