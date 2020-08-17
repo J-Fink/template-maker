@@ -74,8 +74,38 @@
     <script>
         let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
         let copyWebsiteCodeButton = document.getElementById('copy-website-code-button');
-        let facebookText = "asdf";
-        let websiteCode = "asdf";
+        let facebookText = "facebook text";
+        let websiteCode = "website code";
+        let enterDate = document.getElementById('enter-date');
+        let enterDay = document.getElementById('enter-day');
+        let streamStartHour = '07', // either do another input or have this based off of day of week
+        streamStartMinute = '29'; // either do another input or have this based off of day of week, if input possibly doing a time input.
+        weekendFacebookEmbed = 'https://www.facebook.com/watch/200206761419/170745247224514/'; //Sunday Masses playlist - facebook
+        weekdayFacebookEmbed = 'https://www.facebook.com/watch/200206761419/305351103761003/'; //Daily Masses playlist - facebook
+        weekendYoutubeEmbed = 'https://www.youtube.com/watch?v=fm9iA-YXvVw&list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO'; //Sunday Masses playlist - youtube
+        weekdayYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLj7ST6XUszihIdZUUOzuSD1'; //Daily Masses playlist - youtube
+        //Make a block of text for the Mass streaming announcement and display the proper announcement depending on the day of the week ie saturday vs weekday
+        //need to change the naming convention for Sunday Mass jpg, or set up a rule so that displays as Sunday, vs input of Saturday.
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        let enterDateYear,
+        enterDateDate,
+        enterDateMonth,
+        dayOfWeek,
+        enterDateObjectMonth,
+        enterDateObjectDay,
+        enterDateObjectDayOfWeek,
+        
+        template;
+        let newTemplate = document.getElementById('new-template');
+        let liturgicalWeek = document.getElementById('liturgical-week'); //i.e. 18th
+        let liturgicalSeason = document.getElementById('liturgical-season'); //i.e. Ordinary Time/Advent/Lent/Easter
+        let celebrant = document.getElementById('celebrant');//Fr. First Last
+        let celebrantTextInput = document.getElementById('celebrant-text-input');
+        let displayCelebrant = celebrant.value;
+        let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
+
+        
+        // copy text to the clipboard
         function copyTextToClipboard(text){
             var textArea = document.createElement("textarea");
             textArea.style.position = 'fixed';
@@ -103,6 +133,13 @@
             }
             document.body.removeChild(textArea);
         }
+       //add event listener to make template button
+       newTemplate.addEventListener('click', function(){
+            makeTemplate();
+        });
+        //add event listeners to copy text buttons
+        copyButtonsEventListeners();
+        function copyButtonsEventListeners(){
         copyWebsiteCodeButton.addEventListener('click', function(){
             copyWebsiteCodeButton.setAttribute('disabled', '');
             copyTextToClipboard(websiteCode);
@@ -112,38 +149,19 @@
             let facebookCopyText = document.getElementById('facebook-copy-text');
             copyTextToClipboard(facebookCopyText.innerText);
         });
-        let enterDate = document.getElementById('enter-date');
-        let enterDay = document.getElementById('enter-day');
-        let streamStartHour = '07', // either do another input or have this based off of day of week
-        streamStartMinute = '29'; // either do another input or have this based off of day of week, if input possibly doing a time input.
-        weekendFacebookEmbed = 'https://www.facebook.com/watch/200206761419/170745247224514/'; //Sunday Masses playlist - facebook
-        weekdayFacebookEmbed = 'https://www.facebook.com/watch/200206761419/305351103761003/'; //Daily Masses playlist - facebook
-        weekendYoutubeEmbed = 'https://www.youtube.com/watch?v=fm9iA-YXvVw&list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO'; //Sunday Masses playlist - youtube
-        weekdayYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLj7ST6XUszihIdZUUOzuSD1'; //Daily Masses playlist - youtube
-        //Make a block of text for the Mass streaming announcement and display the proper announcement depending on the day of the week ie saturday vs weekday
-        //need to change the naming convention for Sunday Mass jpg, or set up a rule so that displays as Sunday, vs input of Saturday.
-        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        let enterDateYear,
-        enterDateDate,
-        enterDateMonth,
-        dayOfWeek,
-        enterDateObjectMonth,
-        enterDateObjectDay,
-        enterDateObjectDayOfWeek,
-        displayDate,
-        template;
+        }
+        //event listener on date input
         enterDate.addEventListener('change', function(){
             console.log(enterDate.value);
             enterDay.style.visibility = "visible";
             enterDay.style.display = "inline";
         });
-        let newTemplate = document.getElementById('new-template');
-        let liturgicalWeek = document.getElementById('liturgical-week'); //i.e. 18th
-        let liturgicalSeason = document.getElementById('liturgical-season'); //i.e. Ordinary Time/Advent/Lent/Easter
-        let celebrant = document.getElementById('celebrant');//Fr. First Last
-        let celebrantTextInput = document.getElementById('celebrant-text-input');
-        let displayCelebrant = celebrant.value;
-        
+        //event listener on date input to remove border danger
+        enterDate.addEventListener('change', function(){
+            enterDateUpdater();
+            enterDate.classList.remove('border', 'border-danger');
+        });
+        //event listener on celebrant input
         celebrant.addEventListener('change', function(){
             if (celebrant.value == "Other"){
                 celebrantTextInput.style.visibility = "visible";
@@ -156,7 +174,7 @@
                 displayCelebrant = celebrant.value;
             };
         });
-        let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
+        //function to update the date
         function enterDateUpdater(){
             enterDateYear = enterDate.value.split("-")[0]; // ex. 2020
             enterDateYearShort = enterDate.value.split("-")[0].slice(-2); // ex. 2020
@@ -174,8 +192,8 @@
             dayOfWeek = daysOfWeek[enterDateObjectDayOfWeek].toLowerCase();//lowercase day of week
             enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
             console.log(enterDay.value);
-        let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude starts shortly before the start of Mass at 5:15 PM` ;
-        let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
+            let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude starts shortly before the start of Mass at 5:15 PM` ;
+            let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
             if (enterDay.value == 'Saturday') {
                 announcementBlock = saturdayAnnouncementBlock;
                 streamStartHour = '17';
@@ -191,10 +209,6 @@
 
             }
         };
-        enterDate.addEventListener('change', function(){
-            enterDateUpdater();
-            enterDate.classList.remove('border', 'border-danger');
-        });
         function requiredChecker(input){
             input.addEventListener('change', function(){
             input.classList.remove('border', 'border-danger');
@@ -331,17 +345,9 @@
             hiddenElement.insertAdjacentHTML('afterend', template);
 }
 
-
-        
-        newTemplate.addEventListener('click', function(){
+newTemplate.addEventListener('click', function(){
             makeTemplate();
         });
-        myArray = [];
-for (let i = 0; i < 34; i++) {
-    myArray = [];
-    myArray.push(`<option value="${i}">${i}</option>`);
-    
-}
     </script>
 </body>
 </html>
