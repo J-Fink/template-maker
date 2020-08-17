@@ -12,6 +12,11 @@
     <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
     <br>
     <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
+    <select id="meridiem-indicator" name="Meridiem Indicator">
+        <option selected="selected">AM/PM</option>
+        <option value="AM">AM</option>
+        <option value="PM">PM</option>
+    </select>
     <select id="liturgical-week" name="Liturgical Week">
         <option selected="selected" value="">Liturgical Week</option>
         <option value="1st">1st</option>
@@ -99,6 +104,7 @@
         let newTemplate = document.getElementById('new-template');
         let liturgicalWeek = document.getElementById('liturgical-week'); //i.e. 18th
         let liturgicalSeason = document.getElementById('liturgical-season'); //i.e. Ordinary Time/Advent/Lent/Easter
+        let meridiemIndicator = document.getElementById('meridiem-indicator');
         let celebrant = document.getElementById('celebrant');//Fr. First Last
         let celebrantTextInput = document.getElementById('celebrant-text-input');
         let displayCelebrant = celebrant.value;
@@ -258,7 +264,7 @@
                 
                 
                 <em style="font-size: 14px;">Celebrant: ${displayCelebrant}</em>
-                <div id="${dayOfWeek}-announcement">
+                <div id="${dayOfWeek}${meridiemIndicator}-announcement">
                     <p style="margin: 0px;">
                         <em style="font-size: 14px;">
                             <span style="color:#ff0000;">
@@ -267,8 +273,8 @@
                         </em>
                     </p>
                 </div>    
-                <div id="${dayOfWeek}Morning" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
-                    <iframe id="${dayOfWeek}MorningIframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+                <div id="${dayOfWeek}${meridiemIndicator}" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20${meridiemIndicator.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
+                    <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
                 </div>
                 <div>
                     <p style="margin: 0px;">
@@ -300,36 +306,36 @@
             </div>
             <hr>
             <script>
-                let ${dayOfWeek}AMAnnouncement = document.getElementById("${dayOfWeek}-announcement");
-                let ${dayOfWeek}AMiFrame = document.getElementById("${dayOfWeek}MorningIframe");
-                let ${dayOfWeek}AM = document.getElementById("${dayOfWeek}Morning");
-                ${dayOfWeek}GetFormattedDate();
-                let ${dayOfWeek}AMTimeChecker = setInterval(${dayOfWeek}GetFormattedDate, 1000);
-                function ${dayOfWeek}GetFormattedDate(){
-                    var ${dayOfWeek}Date = new Date();
-                    var ${dayOfWeek}Mth = ${dayOfWeek}Date.getMonth() + 1;
-                    var ${dayOfWeek}Dy = ${dayOfWeek}Date.getDate();
-                    var ${dayOfWeek}Hr = ${dayOfWeek}Date.getHours();
-                    var ${dayOfWeek}Min = ${dayOfWeek}Date.getMinutes();
-                    var ${dayOfWeek}Sec = ${dayOfWeek}Date.getSeconds();
-                    ${dayOfWeek}Mth = (${dayOfWeek}Mth < 10 ? "0" : "") + ${dayOfWeek}Mth;
-                    ${dayOfWeek}Dy = (${dayOfWeek}Dy < 10 ? "0" : "") + ${dayOfWeek}Dy;
-                    ${dayOfWeek}Hr = (${dayOfWeek}Hr < 10 ? "0" : "") + ${dayOfWeek}Hr;
-                    ${dayOfWeek}Min = (${dayOfWeek}Min < 10 ? "0" : "") + ${dayOfWeek}Min;
-                    ${dayOfWeek}Sec = (${dayOfWeek}Sec < 10 ? "0" : "") + ${dayOfWeek}Sec;
-                    var ${dayOfWeek}Str = ${dayOfWeek}Mth + "-" + ${dayOfWeek}Dy + " " +  ${dayOfWeek}Hr + ":" + ${dayOfWeek}Min;
-                    ${dayOfWeek}Month = "${enterDateMonth}";
-                    ${dayOfWeek}Day = "${enterDateDate}";
-                    ${dayOfWeek}Hour = "${streamStartHour}";
-                    ${dayOfWeek}Minutes = "${streamStartMinute}";
-                    var ${dayOfWeek}InputStr = ${dayOfWeek}Month + "-" + ${dayOfWeek}Day + " " + ${dayOfWeek}Hour + ":" + ${dayOfWeek}Minutes;
-                    if (${dayOfWeek}Str < ${dayOfWeek}InputStr){
-                        ${dayOfWeek}AMiFrame.style.visibility = "hidden";
+                let ${dayOfWeek}${meridiemIndicator.value}Announcement = document.getElementById("${dayOfWeek}${meridiemIndicator.value}-announcement");
+                let ${dayOfWeek}${meridiemIndicator.value}iFrame = document.getElementById("${dayOfWeek}${meridiemIndicator.value}Iframe");
+                let ${dayOfWeek}${meridiemIndicator.value} = document.getElementById("${dayOfWeek}${meridiemIndicator.value}");
+                ${dayOfWeek}${meridiemIndicator.value}GetFormattedDate();
+                let ${dayOfWeek}${meridiemIndicator.value}TimeChecker = setInterval(${dayOfWeek}${meridiemIndicator.value}GetFormattedDate, 1000);
+                function ${dayOfWeek}${meridiemIndicator.value}GetFormattedDate(){
+                    var ${dayOfWeek}${meridiemIndicator.value}Date = new Date();
+                    var ${dayOfWeek}${meridiemIndicator.value}Mth = ${dayOfWeek}${meridiemIndicator.value}Date.getMonth() + 1;
+                    var ${dayOfWeek}${meridiemIndicator.value}Dy = ${dayOfWeek}${meridiemIndicator.value}Date.getDate();
+                    var ${dayOfWeek}${meridiemIndicator.value}Hr = ${dayOfWeek}${meridiemIndicator.value}Date.getHours();
+                    var ${dayOfWeek}${meridiemIndicator.value}Min = ${dayOfWeek}${meridiemIndicator.value}Date.getMinutes();
+                    var ${dayOfWeek}${meridiemIndicator.value}Sec = ${dayOfWeek}${meridiemIndicator.value}Date.getSeconds();
+                    ${dayOfWeek}${meridiemIndicator.value}Mth = (${dayOfWeek}${meridiemIndicator.value}Mth < 10 ? "0" : "") + ${dayOfWeek}${meridiemIndicator.value}Mth;
+                    ${dayOfWeek}${meridiemIndicator.value}Dy = (${dayOfWeek}${meridiemIndicator.value}Dy < 10 ? "0" : "") + ${dayOfWeek}${meridiemIndicator.value}Dy;
+                    ${dayOfWeek}${meridiemIndicator.value}Hr = (${dayOfWeek}${meridiemIndicator.value}Hr < 10 ? "0" : "") + ${dayOfWeek}${meridiemIndicator.value}Hr;
+                    ${dayOfWeek}${meridiemIndicator.value}Min = (${dayOfWeek}${meridiemIndicator.value}Min < 10 ? "0" : "") + ${dayOfWeek}${meridiemIndicator.value}Min;
+                    ${dayOfWeek}${meridiemIndicator.value}Sec = (${dayOfWeek}${meridiemIndicator.value}Sec < 10 ? "0" : "") + ${dayOfWeek}${meridiemIndicator.value}Sec;
+                    var ${dayOfWeek}${meridiemIndicator.value}Str = ${dayOfWeek}${meridiemIndicator.value}Mth + "-" + ${dayOfWeek}${meridiemIndicator.value}Dy + " " +  ${dayOfWeek}${meridiemIndicator.value}Hr + ":" + ${dayOfWeek}${meridiemIndicator.value}Min;
+                    ${dayOfWeek}${meridiemIndicator.value}Month = "${enterDateMonth}";
+                    ${dayOfWeek}${meridiemIndicator.value}Day = "${enterDateDate}";
+                    ${dayOfWeek}${meridiemIndicator.value}Hour = "${streamStartHour}";
+                    ${dayOfWeek}${meridiemIndicator.value}Minutes = "${streamStartMinute}";
+                    var ${dayOfWeek}${meridiemIndicator.value}InputStr = ${dayOfWeek}${meridiemIndicator.value}Month + "-" + ${dayOfWeek}${meridiemIndicator.value}Day + " " + ${dayOfWeek}${meridiemIndicator.value}Hour + ":" + ${dayOfWeek}${meridiemIndicator.value}Minutes;
+                    if (${dayOfWeek}${meridiemIndicator.value}Str < ${dayOfWeek}${meridiemIndicator.value}InputStr){
+                        ${dayOfWeek}${meridiemIndicator.value}iFrame.style.visibility = "hidden";
                     } else {
-                        ${dayOfWeek}AMiFrame.style.visibility = "visible";
-                        ${dayOfWeek}AM.style.backgroundImage = "none";
-                        ${dayOfWeek}AMAnnouncement.style.display = "none";
-                        clearInterval(${dayOfWeek}AMTimeChecker);
+                        ${dayOfWeek}${meridiemIndicator.value}iFrame.style.visibility = "visible";
+                        ${dayOfWeek}${meridiemIndicator.value}.style.backgroundImage = "none";
+                        ${dayOfWeek}${meridiemIndicator.value}Announcement.style.display = "none";
+                        clearInterval(${dayOfWeek}${meridiemIndicator.value}TimeChecker);
                     }
 
                 }
