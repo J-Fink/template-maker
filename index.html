@@ -7,11 +7,11 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     </head>
     <body>
+    <button class="btn btn-danger" id="reset-template-form" style="visibility: visible;">Reset Template</button>
     <form id="initial-form">
         <button class="btn btn-primary rounded" id="new-template">Make New Template</button>
         <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
         <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
-        <button class="btn btn-danger" id="reset-template-form" style="visibility: visible;">Reset Template</button>
             <br>
         <input clasee="rounded" id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
         <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
@@ -115,8 +115,10 @@
 
         //make a reset function
         let resetButton = document.getElementById('reset-template-form');
-        resetButton.addEventListener('click', reset);
-        function reset(){
+        resetButton.addEventListener('click', function(){
+            resetButtonFunction();
+        });
+        function resetButtonFunction(){
             document.getElementById('initial-form').reset();
         }
         // copy text to the clipboard
