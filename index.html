@@ -12,12 +12,12 @@
     <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
     <br>
     <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
-    <select id="meridiem-indicator" name="Meridiem Indicator">
+    <select id="meridiem-indicator" name="Meridiem Indicator" style="display: none;">
         <option selected="selected">AM/PM</option>
         <option value="AM">AM</option>
         <option value="PM">PM</option>
     </select>
-    <select id="liturgical-week" name="Liturgical Week">
+    <select id="liturgical-week" name="Liturgical Week" style="display: none;">
         <option selected="selected" value="">Liturgical Week</option>
         <option value="1st">1st</option>
         <option value="2nd">2nd</option>
@@ -54,7 +54,7 @@
         <option value="33rd">33rd</option>
         <option value="34th">34th</option>
     </select>
-    <select id="celebrant" name="Celebrant Options">
+    <select id="celebrant" name="Celebrant Options" style="display: none;">
         <option selected="selected" value="">Celebrant:</option>
         <option value="Fr. John Ubel">Fr. John Ubel</option>
         <option value="Fr. Joseph Bambenek">Fr. Joseph Bambenek</option>
@@ -64,7 +64,7 @@
     </select>
     
     <input id="celebrant-text-input" type="text" placeholder="Fr. First Last" style="visibility: collapse; display: none;">
-    <select id="liturgical-season">
+    <select id="liturgical-season" style="display: none;">
         <option selected="selected" value="">Liturgical Season</option>
         <option value="Advent">Advent</option>
         <option value="Christmas">Christmas</option>
@@ -72,9 +72,9 @@
         <option value="Lent">Lent</option>
         <option value="Easter">Easter</option>
     </select>
-    <input id="enter-embed-code-facebook" type="text" placeholder="ends in 2F">
+    <input id="enter-embed-code-facebook" type="text" placeholder="ends in 2F" style="display: none;">
     <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
-    <div id="hidden-element"></div>
+    <div id="hidden-element" style="display: none;"></div>
     
     <script>
         let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
