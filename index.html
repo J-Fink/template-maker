@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mass Template Maker</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-</head>
-<body>
-    <button class="btn btn-primary" id="new-template">Make New Template</button>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mass Template Maker</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    </head>
+    <body>
+    <button class="btn btn-primary rounded" id="new-template">Make New Template</button>
     <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
     <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
-    <br>
-    <input id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
+        <br>
+    <input clasee="rounded" id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
+    <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
     <select id="meridiem-indicator" name="Meridiem Indicator" style="display: none;">
         <option selected="selected">AM/PM</option>
         <option value="AM">AM</option>
@@ -73,10 +74,10 @@
         <option value="Easter">Easter</option>
     </select>
     <input id="enter-embed-code-facebook" type="text" placeholder="ends in 2F" style="display: none;">
-    <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
     <div id="hidden-element" style="display: none;"></div>
     
     <script>
+        let inputChecker = 0;
         let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
         let copyWebsiteCodeButton = document.getElementById('copy-website-code-button');
         let facebookText = "facebook text";
@@ -156,16 +157,48 @@
             copyTextToClipboard(facebookCopyText.innerText);
         });
         }
-        //event listener on date input
+        //======================================//
+        //event listeners on input elements to show the next element
         enterDate.addEventListener('change', function(){
             console.log(enterDate.value);
             enterDay.style.visibility = "visible";
             enterDay.style.display = "inline";
+            meridiemIndicator.style.display = "inline";
+            meridiemIndicator.classList.add('border', 'border-warning');
+            inputChecker = 0;
         });
+        meridiemIndicator.addEventListener('change', function(){
+            meridiemIndicator.classList.remove('border', 'border-warning');
+            liturgicalWeek.style.display = "inline";
+            liturgicalWeek.classList.add('border', 'border-warning');
+        });
+        liturgicalWeek.addEventListener('change', function(){
+            liturgicalWeek.classList.remove('border', 'border-warning');
+            celebrant.style.display = "inline";
+            celebrant.classList.add('border', 'border-warning');
+        });
+        celebrant.addEventListener('change', function(){
+            celebrant.classList.remove('border', 'border-warning');
+            liturgicalSeason.style.display = "inline";
+            liturgicalSeason.classList.add('border', 'border-warning');
+        });
+        liturgicalSeason.addEventListener('change', function(){
+            liturgicalSeason.classList.remove('border', 'border-warning');
+            embedCodeFacebook.style.display = "inline";
+            embedCodeFacebook.classList.add('border', 'border-warning');
+        });
+        embedCodeFacebook.addEventListener('change', function(){
+            embedCodeFacebook.classList.remove('border', 'border-warning');
+            inputChecker = 1;
+            alert('ready to make new template');
+        });
+
+        //======================================//
+        //event listener on date input
         //event listener on date input to remove border danger
         enterDate.addEventListener('change', function(){
             enterDateUpdater();
-            enterDate.classList.remove('border', 'border-danger');
+            enterDate.classList.remove('border', 'border-warning');
         });
         //event listener on celebrant input
         celebrant.addEventListener('change', function(){
@@ -215,18 +248,11 @@
 
             }
         };
-        function requiredChecker(input){
-            input.addEventListener('change', function(){
-            input.classList.remove('border', 'border-danger');
-            console.log('border removed');
-        }
-        );
-            if (input.value == ""){
-                input.classList.add("border", "border-danger");
-            }
-        }
         function makeTemplate(){
-            requiredChecker(liturgicalWeek);
+            if(inputChecker == 0){
+                alert("check inputs");
+                return;
+            } else {
             //ternary operator
             enterDateUpdater();
             copyFacebookTextButton.style.visibility = 'visible';
@@ -349,6 +375,7 @@
             let hiddenElement = document.getElementById('hidden-element');
             console.log(template);
             hiddenElement.insertAdjacentHTML('afterend', template);
+}
 }
     </script>
 </body>
