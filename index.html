@@ -8,7 +8,7 @@
     </head>
     <body>
     <button class="btn btn-danger" id="reset-template-form" style="visibility: visible;">Reset Template</button>
-    <form id="initial-form">
+    <!-- <form id="initial-form"> -->
         <button class="btn btn-primary rounded" id="new-template">Make New Template</button>
         <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
         <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
@@ -76,8 +76,8 @@
             <option value="Easter">Easter</option>
         </select>
         <input id="enter-embed-code-facebook" type="text" placeholder="ends in 2F" style="display: none;">
-        <div id="hidden-element" style="display: none;"></div>
-    </form>
+    <!-- </form> -->
+    <div id="hidden-element" style="display: none;"></div>
     
     <script>
         let inputChecker = 0;
@@ -114,13 +114,13 @@
         let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
 
         //make a reset function
-        let resetButton = document.getElementById('reset-template-form');
-        resetButton.addEventListener('click', function(){
-            resetButtonFunction();
-        });
-        function resetButtonFunction(){
-            document.getElementById('initial-form').reset();
-        }
+        // let resetButton = document.getElementById('reset-template-form');
+        // resetButton.addEventListener('click', function(){
+        //     resetButtonFunction();
+        // });
+        // function resetButtonFunction(){
+        //     document.getElementById('initial-form').reset();
+        // }
         // copy text to the clipboard
         function copyTextToClipboard(text){
             var textArea = document.createElement("textarea");
@@ -199,7 +199,8 @@
             alert('ready to make new template, facebook code is optional');
         });
         embedCodeFacebook.addEventListener('change', function(){
-            embedCodeFacebook.classList.remove('border', 'border-warning');
+            alert("embed changed!")
+            embedCodeFacebook.classList.remove('border', 'border-danger');
         });
 
         //======================================//
@@ -207,7 +208,6 @@
         //event listener on date input to remove border danger
         enterDate.addEventListener('change', function(){
             enterDateUpdater();
-            enterDate.classList.remove('border', 'border-warning');
         });
         //event listener on celebrant input
         celebrant.addEventListener('change', function(){
