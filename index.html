@@ -293,54 +293,58 @@
                 were already there and unite myself wholly to You. Never permit<br>
                 me to be separated from You. Amen</div>`;
             websiteCode = `
-                <div style="text-align: center;">        
-                <h1>Join Us For:</h1>
-                <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
-                
-                
-                <em style="font-size: 14px;">Celebrant: ${displayCelebrant}</em>
-                <div id="${dayOfWeek}${meridiemIndicator}-announcement">
-                    <p style="margin: 0px;">
-                        <em style="font-size: 14px;">
-                            <span style="color:#ff0000;">
-                                ${announcementBlock}
-                            </span>
-                        </em>
-                    </p>
-                </div>    
-                <div id="${dayOfWeek}${meridiemIndicator}" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20${meridiemIndicator.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
-                    <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+                <div id="${dayOfWeek}${meridiemIndicator.value}-container">
+                    <div style="text-align: center;">        
+                    <h1>Join Us For:</h1>
+                    <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
+                    
+                    
+                    <em style="font-size: 14px;">Celebrant: ${displayCelebrant}</em>
+                    <div id="${dayOfWeek}${meridiemIndicator.value}-announcement">
+                        <p style="margin: 0px;">
+                            <em style="font-size: 14px;">
+                                <span style="color:#ff0000;">
+                                    ${announcementBlock}
+                                </span>
+                            </em>
+                        </p>
+                    </div>    
+                    <div id="${dayOfWeek}${meridiemIndicator.value}" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20${meridiemIndicator.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
+                        <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+                    </div>
+                    <div>
+                        <p style="margin: 0px;">
+                            <em>Note: After initial streaming, Mass will be available on Facebook <a href="${facebookEmbed}" target="_blank">here</a> & YouTube <a href="${youtubeEmbed}" target="_blank">here</a>.
+                            </em>
+                        </p>
+                        <p style="margin:0px">
+                            Mass readings available at a reduced subscription from Magnificat:
+                        </p>
+                        <ul style="list-style-type: none; margin-top: 0px;">
+                            <li>
+                                <a href="https://us.magnificat.net/free" target="_blank">
+                                    English
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://latina.magnificat.net/gratis" target="_blank">
+                                    Spanish
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://us.magnificat.net/flipbook/KID/sample/" target="_blank">
+                                    For Children
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
                 </div>
-                <div>
-                    <p style="margin: 0px;">
-                        <em>Note: After initial streaming, Mass will be available on Facebook <a href="${facebookEmbed}" target="_blank">here</a> & YouTube <a href="${youtubeEmbed}" target="_blank">here</a>.
-                        </em>
-                    </p>
-                    <p style="margin:0px">
-                        Mass readings available at a reduced subscription from Magnificat:
-                    </p>
-                    <ul style="list-style-type: none; margin-top: 0px;">
-                        <li>
-                            <a href="https://us.magnificat.net/free" target="_blank">
-                                English
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://latina.magnificat.net/gratis" target="_blank">
-                                Spanish
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://us.magnificat.net/flipbook/KID/sample/" target="_blank">
-                                For Children
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                
+                <hr>
             </div>
-            <hr>
             <script>
+                let ${dayOfWeek}${meridiemIndicator.value}Container = document.getElementById('${dayOfWeek}${meridiemIndicator.value}-announcement');
+                ${dayOfWeek}${meridiemIndicator.value}Container.style.display = 'none';
                 let ${dayOfWeek}${meridiemIndicator.value}Announcement = document.getElementById("${dayOfWeek}${meridiemIndicator.value}-announcement");
                 let ${dayOfWeek}${meridiemIndicator.value}iFrame = document.getElementById("${dayOfWeek}${meridiemIndicator.value}Iframe");
                 let ${dayOfWeek}${meridiemIndicator.value} = document.getElementById("${dayOfWeek}${meridiemIndicator.value}");
@@ -364,6 +368,13 @@
                     ${dayOfWeek}${meridiemIndicator.value}Hour = "${streamStartHour}";
                     ${dayOfWeek}${meridiemIndicator.value}Minutes = "${streamStartMinute}";
                     var ${dayOfWeek}${meridiemIndicator.value}InputStr = ${dayOfWeek}${meridiemIndicator.value}Month + "-" + ${dayOfWeek}${meridiemIndicator.value}Day + " " + ${dayOfWeek}${meridiemIndicator.value}Hour + ":" + ${dayOfWeek}${meridiemIndicator.value}Minutes;
+                    function ${dayOfWeek}${meridiemIndicator.value}CheckDay(){
+                        if(${dayOfWeek}${meridiemIndicator.value}Day !== ${dayOfWeek}${meridiemIndicator.value}Dy){
+                            return;
+                        } else {
+                            ${dayOfWeek}${meridiemIndicator.value}Container.style.display = 'inline';
+                        }
+                    }
                     if (${dayOfWeek}${meridiemIndicator.value}Str < ${dayOfWeek}${meridiemIndicator.value}InputStr){
                         ${dayOfWeek}${meridiemIndicator.value}iFrame.style.visibility = "hidden";
                     } else {
