@@ -240,21 +240,27 @@
             dayOfWeek = daysOfWeek[enterDateObjectDayOfWeek].toLowerCase();//lowercase day of week
             enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
             console.log(enterDay.value);
-            let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude starts shortly before the start of Mass at 5:15 PM` ;
+            let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude will begin shortly before the start of Mass at 5:15 PM` ;
             let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
-            if (enterDay.value == 'Saturday') {
+            if(meridiemIndicator.value == 'PM'){
+                periodIndicator = 'Evening';
+            } else { 
+                periodIndicator = 'Morning';
+            }
+            if ((enterDay.value == 'Saturday' && meridiemIndicator.value == 'PM') || enterDay.value == 'Sunday'){
                 announcementBlock = saturdayAnnouncementBlock;
                 streamStartHour = '17';
                 streamStartMinute = '09';//pass in a string with leading zero if you want to keep the leading zero
                 facebookEmbed = weekendFacebookEmbed;
                 youtubeEmbed = weekendYoutubeEmbed;
                 bulletinAnnouncement = `<br>Liturgy guide/bulletin here:<br>http://www.cathedralsaintpaul.org/bulletin<br>`;
+                bulletinAnnouncementWebsite = `Bulletin/Liturgy Guide <a href="http://www.cathedralsaintpaul.org/bulletin" target="_blank">here</a>`
             } else {
                 announcementBlock = weekdayAnnouncementBlock;
                 facebookEmbed = weekdayFacebookEmbed;
                 youtubeEmbed = weekdayYoutubeEmbed;
                 bulletinAnnouncement = '';
-
+                bulletinAnnouncementWebsite = '';
             }
         };
         function makeTemplate(){
@@ -275,7 +281,7 @@
             facebookText = `
                 <h1>Facebook Text</h1>
                 <div id="facebook-copy-text">
-                ${displayDate} Mass for ${enterDay.value} in the ${liturgicalWeek.value} Week in ${liturgicalSeason.value},<br> Cathedral of Saint Paul, St. Paul, MN <br>
+                ${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}, <br> Cathedral of Saint Paul, St. Paul, MN <br>
                 Celebrant: ${displayCelebrant}<br>
                 Support the Cathedral here:<br>
                 https://www.cathedralsaintpaul.org/give<br>
@@ -296,7 +302,7 @@
                 <div id="${dayOfWeek}${meridiemIndicator.value}-container">
                     <div style="text-align: center;">        
                     <h1>Join Us For:</h1>
-                    <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
+                    <p>${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
                     
                     
                     <em style="font-size: 14px;">Celebrant: ${displayCelebrant}</em>
@@ -312,6 +318,7 @@
                     <div id="${dayOfWeek}${meridiemIndicator.value}" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20${meridiemIndicator.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
                         <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" scrolling="no" src="${embedCodeFacebook.value}&show_text=0&width=560" style="border:none;overflow:hidden;" width="400"></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
                     </div>
+                    ${bulletinAnnouncementWebsite}
                     <div>
                         <p style="margin: 0px;">
                             <em>Note: After initial streaming, Mass will be available on Facebook <a href="${facebookEmbed}" target="_blank">here</a> & YouTube <a href="${youtubeEmbed}" target="_blank">here</a>.
@@ -375,6 +382,7 @@
                             ${dayOfWeek}${meridiemIndicator.value}Container.style.display = 'inline';
                         }
                     }
+                    ${dayOfWeek}${meridiemIndicator.value}CheckDay();
                     if (${dayOfWeek}${meridiemIndicator.value}Str < ${dayOfWeek}${meridiemIndicator.value}InputStr){
                         ${dayOfWeek}${meridiemIndicator.value}iFrame.style.visibility = "hidden";
                     } else {
