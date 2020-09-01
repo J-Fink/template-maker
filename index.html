@@ -80,6 +80,7 @@
     <div id="hidden-element" style="display: none;"></div>
     
     <script>
+        let checkDayOperator;
         let inputChecker = 0;
         let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
         let copyWebsiteCodeButton = document.getElementById('copy-website-code-button');
@@ -251,6 +252,7 @@
                 announcementBlock = saturdayAnnouncementBlock;
                 streamStartHour = '17';
                 streamStartMinute = '09';//pass in a string with leading zero if you want to keep the leading zero
+                checkDayOperator = '<';
                 facebookEmbed = weekendFacebookEmbed;
                 youtubeEmbed = weekendYoutubeEmbed;
                 bulletinAnnouncement = `<br>Liturgy guide/bulletin here:<br>http://www.cathedralsaintpaul.org/bulletin<br>`;
@@ -261,6 +263,7 @@
                 youtubeEmbed = weekdayYoutubeEmbed;
                 bulletinAnnouncement = '';
                 bulletinAnnouncementWebsite = '';
+                checkDayOperator = '!=='
             }
         };
         function makeTemplate(){
@@ -376,14 +379,14 @@
                     ${dayOfWeek}${meridiemIndicator.value}Minutes = "${streamStartMinute}";
                     var ${dayOfWeek}${meridiemIndicator.value}InputStr = ${dayOfWeek}${meridiemIndicator.value}Month + "-" + ${dayOfWeek}${meridiemIndicator.value}Day + " " + ${dayOfWeek}${meridiemIndicator.value}Hour + ":" + ${dayOfWeek}${meridiemIndicator.value}Minutes;
                     function ${dayOfWeek}${meridiemIndicator.value}CheckDay(){
-                        if(${dayOfWeek}${meridiemIndicator.value}Day !== ${dayOfWeek}${meridiemIndicator.value}Dy){
+                        if(${dayOfWeek}${meridiemIndicator.value}Day < ${dayOfWeek}${meridiemIndicator.value}Dy){
                             return;
                         } else {
                             ${dayOfWeek}${meridiemIndicator.value}Container.style.display = 'inline';
                         }
                     }
                     ${dayOfWeek}${meridiemIndicator.value}CheckDay();
-                    if (${dayOfWeek}${meridiemIndicator.value}Str < ${dayOfWeek}${meridiemIndicator.value}InputStr){
+                    if (${dayOfWeek}${meridiemIndicator.value}Str ${checkDayOperator} ${dayOfWeek}${meridiemIndicator.value}InputStr){
                         ${dayOfWeek}${meridiemIndicator.value}iFrame.style.visibility = "hidden";
                     } else {
 
