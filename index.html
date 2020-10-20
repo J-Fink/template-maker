@@ -80,6 +80,7 @@
     <div id="hidden-element" style="display: none;"></div>
     
     <script>
+
         let checkDayOperator;
         let inputChecker = 0;
         let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
@@ -178,29 +179,40 @@
             inputChecker = 0;
         });
         meridiemIndicator.addEventListener('change', function(){
-            meridiemIndicator.classList.remove('border', 'border-danger');
+            if(localStorage.liturgicalWeekStorage !== "") {
             liturgicalWeek.style.display = "inline";
+            celebrant.style.display = "inline";
+            meridiemIndicator.classList.remove('border', 'border-danger');
+            } else {
+            meridiemIndicator.classList.remove('border', 'border-danger');
             liturgicalWeek.classList.add('border', 'border-danger');
+            }
         });
         liturgicalWeek.addEventListener('change', function(){
             liturgicalWeek.classList.remove('border', 'border-danger');
             celebrant.style.display = "inline";
             celebrant.classList.add('border', 'border-danger');
+            localStorage.setItem('liturgicalWeekStorage', `${liturgicalWeek.value}`); 
         });
         celebrant.addEventListener('change', function(){
+            if(localStorage.liturgicalSeasonStorage !== "") {
+            liturgicalSeason.style.display = "inline";
+            embedCodeFacebook.style.display = "inline";
+            inputChecker = 1;
+            } else {
             celebrant.classList.remove('border', 'border-danger');
             liturgicalSeason.style.display = "inline";
             liturgicalSeason.classList.add('border', 'border-danger');
+            }
         });
         liturgicalSeason.addEventListener('change', function(){
             liturgicalSeason.classList.remove('border', 'border-danger');
             embedCodeFacebook.style.display = "inline";
             embedCodeFacebook.classList.add('border', 'border-danger');
             inputChecker = 1;
-            alert('ready to make new template, facebook code is optional');
+            localStorage.setItem('liturgicalSeasonStorage', `${liturgicalSeason.value}`);
         });
         embedCodeFacebook.addEventListener('change', function(){
-            alert("embed changed!")
             embedCodeFacebook.classList.remove('border', 'border-danger');
         });
 
@@ -266,8 +278,16 @@
                 checkDayOperator = '!=='
             }
         };
+        function storedValues() {
+            liturgicalWeek.value = localStorage.liturgicalWeekStorage;
+            liturgicalSeason.value = localStorage.liturgicalSeasonStorage;
+            //set certain variables to local storage
+            //Liturgical Week liturgicalWeek , Celebrant, Liturgical Season liturgicalSeason
+            // and use those as the first values
+        }
+        storedValues();
         function makeTemplate(){
-            if(inputChecker == 0){
+            if(inputChecker === 0){
                 alert("check inputs");
                 return;
             } else {
