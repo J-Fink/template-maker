@@ -13,7 +13,7 @@
         <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
         <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
             <br>
-        <input clasee="rounded" id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
+        <input class="rounded" id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
         <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
         <select id="meridiem-indicator" name="Meridiem Indicator" style="display: none;">
             <option selected="selected">AM/PM</option>
@@ -57,16 +57,7 @@
             <option value="33rd">33rd</option>
             <option value="34th">34th</option>
         </select>
-        <select id="celebrant" name="Celebrant Options" style="display: none;">
-            <option selected="selected" value="">Celebrant:</option>
-            <option value="Fr. John Ubel">Fr. John Ubel</option>
-            <option value="Fr. Joseph Bambenek">Fr. Joseph Bambenek</option>
-            <option value="Fr. Mark Pavlak">Fr. Mark Pavlak</option>
-            <option value="Archbishop Bernard Hebda">Archbishop Bernard Hebda</option>
-            <option value="Other">Other</option>
-        </select>
         
-        <input id="celebrant-text-input" type="text" placeholder="Fr. First Last" style="visibility: collapse; display: none;">
         <select id="liturgical-season" style="display: none;">
             <option selected="selected" value="">Liturgical Season</option>
             <option value="Advent">Advent</option>
@@ -109,9 +100,7 @@
         let liturgicalWeek = document.getElementById('liturgical-week'); //i.e. 18th
         let liturgicalSeason = document.getElementById('liturgical-season'); //i.e. Ordinary Time/Advent/Lent/Easter
         let meridiemIndicator = document.getElementById('meridiem-indicator');
-        let celebrant = document.getElementById('celebrant');//Fr. First Last
-        let celebrantTextInput = document.getElementById('celebrant-text-input');
-        let displayCelebrant = celebrant.value;
+      
         let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
 
         //make a reset function
@@ -184,14 +173,10 @@
         });
         liturgicalWeek.addEventListener('change', function(){
             liturgicalWeek.classList.remove('border', 'border-danger');
-            celebrant.style.display = "inline";
-            celebrant.classList.add('border', 'border-danger');
-        });
-        celebrant.addEventListener('change', function(){
-            celebrant.classList.remove('border', 'border-danger');
             liturgicalSeason.style.display = "inline";
             liturgicalSeason.classList.add('border', 'border-danger');
         });
+
         liturgicalSeason.addEventListener('change', function(){
             liturgicalSeason.classList.remove('border', 'border-danger');
             embedCodeFacebook.style.display = "inline";
@@ -285,14 +270,12 @@
     <h1>Facebook Text</h1>
 <div id="facebook-copy-text">
     ${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>
-    Celebrant: ${displayCelebrant}<br>
     Support the Cathedral here:<br>
     https://www.cathedralsaintpaul.org/give<br>
     ${bulletinAnnouncement}
-    Mass readings available at a reduced subscription from Magnificat<br>
-    English: www.magnificat.com/free<br>
-    Spanish: www.magnificat.com/gratis<br>
-    For children: www.magnifikid.com/free<br>
+    Mass readings available from the USCCB:<br>
+    English| https://bible.usccb.org/<br>
+    Spanish| https://bible.usccb.org/es<br>
     <br>
     An Act of Spiritual Communion:<br>
     My Jesus, I believe that You are present in the Most Holy Sacrament.<br>
@@ -307,8 +290,6 @@ websiteCode = `
         <h1>Join Us For:</h1>
         <p>${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
         
-        
-        <em style="font-size: 14px;">Celebrant: ${displayCelebrant}</em>
         <div id="${dayOfWeek}${meridiemIndicator.value}-announcement">
             <p style="margin: 0px;">
                 <em style="font-size: 14px;">
@@ -328,22 +309,17 @@ websiteCode = `
                 </em>
             </p>
             <p style="margin:0px">
-                Mass readings available at a reduced subscription from Magnificat:
+                Mass readings available from the USCCB:
             </p>
             <ul style="list-style-type: none; margin-top: 0px;">
                 <li>
-                    <a href="https://us.magnificat.net/free" target="_blank">
+                    <a href="https://bible.usccb.org/" target="_blank" rel="noopener noreferrer">
                         English
                     </a>
                 </li>
                 <li>
-                    <a href="https://latina.magnificat.net/gratis" target="_blank">
+                    <a href="https://bible.usccb.org/es" target="_blank" rel="noopener noreferrer">
                         Spanish
-                    </a>
-                </li>
-                <li>
-                    <a href="https://us.magnificat.net/flipbook/KID/sample/" target="_blank">
-                        For Children
                     </a>
                 </li>
             </ul>
