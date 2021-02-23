@@ -22,40 +22,40 @@
         </select>
         <select id="liturgical-week" name="Liturgical Week" style="display: none;">
             <option selected="selected" value="">Liturgical Week</option>
-            <option value="1st">1st</option>
-            <option value="2nd">2nd</option>
-            <option value="3rd">3rd</option>
-            <option value="4th">4th</option>
-            <option value="5th">5th</option>
-            <option value="6th">6th</option>
-            <option value="7th">7th</option>
-            <option value="8th">8th</option>
-            <option value="9th">9th</option>
-            <option value="10th">10th</option>
-            <option value="11th">11th</option>
-            <option value="12th">12th</option>
-            <option value="13th">13th</option>
-            <option value="14th">14th</option>
-            <option value="15th">15th</option>
-            <option value="16th">16th</option>
-            <option value="17th">17th</option>
-            <option value="18th">18th</option>
-            <option value="19th">19th</option>
-            <option value="20th">20th</option>
-            <option value="21st">21st</option>
-            <option value="22nd">22nd</option>
-            <option value="23rd">23rd</option>
-            <option value="24th">24th</option>
-            <option value="25th">25th</option>
-            <option value="26th">26th</option>
-            <option value="27th">27th</option>
-            <option value="28th">28th</option>
-            <option value="29th">29th</option>
-            <option value="30th">30th</option>
-            <option value="31st">31st</option>
-            <option value="32nd">32nd</option>
-            <option value="33rd">33rd</option>
-            <option value="34th">34th</option>
+            <option value="First">1st</option>
+            <option value="Second">2nd</option>
+            <option value="Third">3rd</option>
+            <option value="Fourth">4th</option>
+            <option value="Fifth">5th</option>
+            <option value="Sixth">6th</option>
+            <option value="Seventh">7th</option>
+            <option value="Eighth">8th</option>
+            <option value="Ninth">9th</option>
+            <option value="Tenth">10th</option>
+            <option value="Eleventh">11th</option>
+            <option value="Twelfth">12th</option>
+            <option value="Thirteenth">13th</option>
+            <option value="Fourteenth">14th</option>
+            <option value="Fifteenth">15th</option>
+            <option value="Sixteenth">16th</option>
+            <option value="Seventeenth">17th</option>
+            <option value="Eighteenth">18th</option>
+            <option value="Nineteenth">19th</option>
+            <option value="Twentieth">20th</option>
+            <option value="Twenty-First">21st</option>
+            <option value="Twenty-Second">22nd</option>
+            <option value="Twenty-Third">23rd</option>
+            <option value="Twenty-Fourth">24th</option>
+            <option value="Twenty-Fifth">25th</option>
+            <option value="Twenty-Sixth">26th</option>
+            <option value="Twenty-Seventh">27th</option>
+            <option value="Twenty-Eighth">28th</option>
+            <option value="Twenty-Ninth">29th</option>
+            <option value="Thirtieth">30th</option>
+            <option value="Thirty-First">31st</option>
+            <option value="Thirty-Second">32nd</option>
+            <option value="Thirty-Third">33rd</option>
+            <option value="Thirty-Fourth">34th</option>
         </select>
         
         <select id="liturgical-season" style="display: none;">
@@ -80,7 +80,7 @@
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
         let streamStartHour = '07', // either do another input or have this based off of day of week
-        streamStartMinute = '26'; // either do another input or have this based off of day of week, if input possibly doing a time input.
+        streamStartMinute = '30'; // either do another input or have this based off of day of week, if input possibly doing a time input.
         weekendFacebookEmbed = 'https://www.facebook.com/watch/200206761419/170745247224514/'; //Sunday Masses playlist - facebook
         weekdayFacebookEmbed = 'https://www.facebook.com/watch/200206761419/305351103761003/'; //Daily Masses playlist - facebook
         weekendYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO'; //Sunday Masses playlist - youtube
@@ -227,13 +227,14 @@
             enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
             console.log(enterDay.value);
             let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude will begin shortly before the start of Mass at 5:15 PM` ;
+            let sundayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude will begin shortly before the start of Mass at 10:00 AM` ; 
             let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
             if(meridiemIndicator.value == 'PM'){
                 periodIndicator = 'Evening';
             } else { 
                 periodIndicator = 'Morning';
             }
-            if ((enterDay.value == 'Saturday' && meridiemIndicator.value == 'PM') || enterDay.value == 'Sunday'){
+            if (enterDay.value === 'Saturday' && meridiemIndicator.value === 'PM') {
                 announcementBlock = saturdayAnnouncementBlock;
                 streamStartHour = '17';
                 streamStartMinute = '09';//pass in a string with leading zero if you want to keep the leading zero
@@ -242,14 +243,24 @@
                 youtubeEmbed = weekendYoutubeEmbed;
                 bulletinAnnouncement = `<br>Liturgy guide/bulletin here:<br>http://www.cathedralsaintpaul.org/bulletin<br>`;
                 bulletinAnnouncementWebsite = `Bulletin/Liturgy Guide <a href="http://www.cathedralsaintpaul.org/bulletin" target="_blank">here</a>`
-            } else {
+            } else if (enterDay.value === 'Sunday' && meridiemIndicator.value === 'AM') {
+                announcementBlock = sundayAnnouncementBlock;
+                streamStartHour = '09';
+                streamStartMinute = '54';//pass in a string with leading zero if you want to keep the leading zero
+                checkDayOperator = '<';
+                facebookEmbed = weekendFacebookEmbed;
+                youtubeEmbed = weekendYoutubeEmbed;
+                bulletinAnnouncement = `<br>Liturgy guide/bulletin here:<br>http://www.cathedralsaintpaul.org/bulletin<br>`;
+                bulletinAnnouncementWebsite = `Bulletin/Liturgy Guide <a href="http://www.cathedralsaintpaul.org/bulletin" target="_blank">here</a>`
+                }
+                else {
                 announcementBlock = weekdayAnnouncementBlock;
                 facebookEmbed = weekdayFacebookEmbed;
                 youtubeEmbed = weekdayYoutubeEmbed;
                 bulletinAnnouncement = '';
                 bulletinAnnouncementWebsite = '';
                 checkDayOperator = '!=='
-            }
+                }
         };
         function makeTemplate(){
             if(inputChecker == 0){
@@ -269,7 +280,7 @@
             facebookText = `
     <h1>Facebook Text</h1>
 <div id="facebook-copy-text">
-    ${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>
+    ${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week of ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>
     Support the Cathedral here:<br>
     https://www.cathedralsaintpaul.org/give<br>
     ${bulletinAnnouncement}
@@ -300,7 +311,7 @@ websiteCode = `
             </p>
         </div>    
         <div id="${dayOfWeek}${meridiemIndicator.value}" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20${meridiemIndicator.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
-            <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="577" width="460" scrolling="no" src="${embedCodeFacebook.value}" style="border:none;overflow:hidden;" ></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+            <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" width="400" scrolling="no" src="${embedCodeFacebook.value}" style="border:none;overflow:hidden;" ></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
         </div>
         ${bulletinAnnouncementWebsite}
         <div>
@@ -367,14 +378,11 @@ websiteCode = `
             return;
         } else {
             clearInterval(${dayOfWeek}${meridiemIndicator.value}TimeChecker);
-            setTimeout(function(){
             ${dayOfWeek}${meridiemIndicator.value}iFrame.src = ${dayOfWeek}${meridiemIndicator.value}iFrame.src;
             ${dayOfWeek}${meridiemIndicator.value}iFrame.style.visibility = "visible";
             ${dayOfWeek}${meridiemIndicator.value}.style.backgroundImage = "none";
-            ${dayOfWeek}${meridiemIndicator.value}.style.height = "577px";
-            ${dayOfWeek}${meridiemIndicator.value}.style.width = "460px";
-            ${dayOfWeek}${meridiemIndicator.value}Announcement.style.display = "none";}, 2000);
-        }
+            ${dayOfWeek}${meridiemIndicator.value}Announcement.style.display = "none";
+            }
     }
 <\/script>`;
             var template = `
