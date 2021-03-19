@@ -66,7 +66,7 @@
             <option value="Lent">Lent</option>
             <option value="Easter">Easter</option>
         </select>
-        <input id="enter-embed-code-facebook" type="text" placeholder="ends in width=480" style="display: none;">
+        <input id="enter-embed-code-facebook" type="text" placeholder="Paste Entire Embed Code" style="display: none;">
     <!-- </form> -->
     <div id="hidden-element" style="display: none;"></div>
     
@@ -187,8 +187,14 @@
         embedCodeFacebook.addEventListener('change', function(){
             alert("embed changed!")
             embedCodeFacebook.classList.remove('border', 'border-danger');
-        });
+            srcFinder(embedCodeFacebook);
 
+        });
+        function srcFinder(input) {
+            let str = input.value;
+            let splitStr = str.split('\"')[1];
+            input.value = splitStr;
+        }
         //======================================//
         //event listener on date input
         //event listener on date input to remove border danger
