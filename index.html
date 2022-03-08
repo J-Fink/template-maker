@@ -8,65 +8,57 @@
     </head>
     <body>
     <button class="btn btn-danger" id="reset-template-form" style="visibility: visible;">Reset Template</button>
-    <!-- <form id="initial-form"> -->
-        <button class="btn btn-primary rounded" id="new-template">Make New Template</button>
-        <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
-        <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
+    <button class="btn btn-primary rounded" id="new-template">Make New Template</button>
+    <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
+    <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
+    
+    <form id="initial-form">
             <br>
-        <input clasee="rounded" id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
+        <input class="rounded" id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
         <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
         <select id="meridiem-indicator" name="Meridiem Indicator" style="display: none;">
-            <option selected="selected">AM/PM</option>
+            <option selected="selected" value="">AM/PM</option>
             <option value="AM">AM</option>
             <option value="PM">PM</option>
         </select>
         <select id="liturgical-week" name="Liturgical Week" style="display: none;">
             <option selected="selected" value="">Liturgical Week</option>
-            <option value="1st">1st</option>
-            <option value="2nd">2nd</option>
-            <option value="3rd">3rd</option>
-            <option value="4th">4th</option>
-            <option value="5th">5th</option>
-            <option value="6th">6th</option>
-            <option value="7th">7th</option>
-            <option value="8th">8th</option>
-            <option value="9th">9th</option>
-            <option value="10th">10th</option>
-            <option value="11th">11th</option>
-            <option value="12th">12th</option>
-            <option value="13th">13th</option>
-            <option value="14th">14th</option>
-            <option value="15th">15th</option>
-            <option value="16th">16th</option>
-            <option value="17th">17th</option>
-            <option value="18th">18th</option>
-            <option value="19th">19th</option>
-            <option value="20th">20th</option>
-            <option value="21st">21st</option>
-            <option value="22nd">22nd</option>
-            <option value="23rd">23rd</option>
-            <option value="24th">24th</option>
-            <option value="25th">25th</option>
-            <option value="26th">26th</option>
-            <option value="27th">27th</option>
-            <option value="28th">28th</option>
-            <option value="29th">29th</option>
-            <option value="30th">30th</option>
-            <option value="31st">31st</option>
-            <option value="32nd">32nd</option>
-            <option value="33rd">33rd</option>
-            <option value="34th">34th</option>
-        </select>
-        <select id="celebrant" name="Celebrant Options" style="display: none;">
-            <option selected="selected" value="">Celebrant:</option>
-            <option value="Fr. John Ubel">Fr. John Ubel</option>
-            <option value="Fr. Joseph Bambenek">Fr. Joseph Bambenek</option>
-            <option value="Fr. Mark Pavlak">Fr. Mark Pavlak</option>
-            <option value="Archbishop Bernard Hebda">Archbishop Bernard Hebda</option>
-            <option value="Other">Other</option>
+            <option value="First">1st</option>
+            <option value="Second">2nd</option>
+            <option value="Third">3rd</option>
+            <option value="Fourth">4th</option>
+            <option value="Fifth">5th</option>
+            <option value="Sixth">6th</option>
+            <option value="Seventh">7th</option>
+            <option value="Eighth">8th</option>
+            <option value="Ninth">9th</option>
+            <option value="Tenth">10th</option>
+            <option value="Eleventh">11th</option>
+            <option value="Twelfth">12th</option>
+            <option value="Thirteenth">13th</option>
+            <option value="Fourteenth">14th</option>
+            <option value="Fifteenth">15th</option>
+            <option value="Sixteenth">16th</option>
+            <option value="Seventeenth">17th</option>
+            <option value="Eighteenth">18th</option>
+            <option value="Nineteenth">19th</option>
+            <option value="Twentieth">20th</option>
+            <option value="Twenty-First">21st</option>
+            <option value="Twenty-Second">22nd</option>
+            <option value="Twenty-Third">23rd</option>
+            <option value="Twenty-Fourth">24th</option>
+            <option value="Twenty-Fifth">25th</option>
+            <option value="Twenty-Sixth">26th</option>
+            <option value="Twenty-Seventh">27th</option>
+            <option value="Twenty-Eighth">28th</option>
+            <option value="Twenty-Ninth">29th</option>
+            <option value="Thirtieth">30th</option>
+            <option value="Thirty-First">31st</option>
+            <option value="Thirty-Second">32nd</option>
+            <option value="Thirty-Third">33rd</option>
+            <option value="Thirty-Fourth">34th</option>
         </select>
         
-        <input id="celebrant-text-input" type="text" placeholder="Fr. First Last" style="visibility: collapse; display: none;">
         <select id="liturgical-season" style="display: none;">
             <option selected="selected" value="">Liturgical Season</option>
             <option value="Advent">Advent</option>
@@ -75,13 +67,16 @@
             <option value="Lent">Lent</option>
             <option value="Easter">Easter</option>
         </select>
-        <input id="enter-embed-code-facebook" type="text" placeholder="ends in width=480" style="display: none;">
-    <!-- </form> -->
+        <input id="enter-embed-code-facebook" type="text" placeholder="Paste Entire Embed Code" style="display: none;">
+    </form>
     <div id="hidden-element" style="display: none;"></div>
     
     <script>
-
         let checkDayOperator;
+        let initialForm = document.getElementById('initial-form');
+        //console.log(initialForm);
+        let formElements = initialForm.elements; //elements of the initial form
+        // get values of formElements
         let inputChecker = 0;
         let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
         let copyWebsiteCodeButton = document.getElementById('copy-website-code-button');
@@ -90,11 +85,51 @@
         let enterDate = document.getElementById('enter-date');
         let enterDay = document.getElementById('enter-day');
         let streamStartHour = '07', // either do another input or have this based off of day of week
-        streamStartMinute = '26'; // either do another input or have this based off of day of week, if input possibly doing a time input.
+        streamStartMinute = '30'; // either do another input or have this based off of day of week, if input possibly doing a time input.
         weekendFacebookEmbed = 'https://www.facebook.com/watch/200206761419/170745247224514/'; //Sunday Masses playlist - facebook
         weekdayFacebookEmbed = 'https://www.facebook.com/watch/200206761419/305351103761003/'; //Daily Masses playlist - facebook
         weekendYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO'; //Sunday Masses playlist - youtube
         weekdayYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLj7ST6XUszihIdZUUOzuSD1'; //Daily Masses playlist - youtube
+        
+        
+        //prevent default of form. This keeps the form from 'submitting', i.e. clearing when I make the new template
+        initialForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+        });
+        //take info from form and put into local storage
+        // get form data
+        function getFormData(){
+            let formData = {};
+            formData.enterDate = enterDate.value;
+            formData.meridiemIndicator = meridiemIndicator.value;
+            formData.liturgicalWeek = liturgicalWeek.value;
+            formData.liturgicalSeason = liturgicalSeason.value;
+            // return data;
+            console.log(formData);
+            window.localStorage.setItem('formData', JSON.stringify(formData));
+            // console.log(window.localStorage);
+        }
+            // //date info
+            // console.log(enterDate.value);
+            // //meridiem info
+            // console.log(meridiemIndicator.value);
+            // //lit week
+            // console.log(liturgicalWeek.value);
+            // //lit season
+            // console.log(liturgicalSeason.value);
+        
+            // return formData;
+            // let data = { [initialForm]: {}};
+            // for (const element of formElements) {
+            //     console.log(element.name);
+                // if (element.name.length > 0) {
+                //     data[initialForm][element.name] = element.value;
+                // }
+            // }
+            // return data;
+        // }
+        // console.log(formElements);
+
         //Make a block of text for the Mass streaming announcement and display the proper announcement depending on the day of the week ie saturday vs weekday
         //need to change the naming convention for Sunday Mass jpg, or set up a rule so that displays as Sunday, vs input of Saturday.
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -110,9 +145,7 @@
         let liturgicalWeek = document.getElementById('liturgical-week'); //i.e. 18th
         let liturgicalSeason = document.getElementById('liturgical-season'); //i.e. Ordinary Time/Advent/Lent/Easter
         let meridiemIndicator = document.getElementById('meridiem-indicator');
-        let celebrant = document.getElementById('celebrant');//Fr. First Last
-        let celebrantTextInput = document.getElementById('celebrant-text-input');
-        let displayCelebrant = celebrant.value;
+      
         let embedCodeFacebook = document.getElementById('enter-embed-code-facebook');//ends in 2F
 
         //make a reset function
@@ -123,6 +156,27 @@
         // function resetButtonFunction(){
         //     document.getElementById('initial-form').reset();
         // }
+        //set initial values of inputs from localStorage
+        //liturgical week and liturgical season are the two I want to set right away
+            window.onload = (e) => {
+                if(window.localStorage.getItem('formData')){
+                let myFormData = JSON.parse(window.localStorage.getItem('formData'))
+                console.log(typeof(liturgicalSeason.value));
+                console.log(myFormData.liturgicalSeason);
+                console.log(myFormData);
+                enterDate.value = myFormData?.enterDate;
+                meridiemIndicator.value = myFormData?.meridiemIndicator;
+                liturgicalWeek.value = myFormData?.liturgicalWeek;
+                liturgicalSeason.value = myFormData?.liturgicalSeason;
+                // liturgicalSeason.setAttribute('value' = myFormData?.liturgicalSeason;
+                // console.log(liturgicalSeason.value);
+                
+                }  else {
+                    return
+                }
+            }
+
+
         // copy text to the clipboard
         function copyTextToClipboard(text){
             var textArea = document.createElement("textarea");
@@ -154,6 +208,7 @@
        //add event listener to make template button
        newTemplate.addEventListener('click', function(){
             makeTemplate();
+            getFormData();
         });
         //add event listeners to copy text buttons
         copyButtonsEventListeners();
@@ -170,7 +225,9 @@
         }
         //======================================//
         //event listeners on input elements to show the next element
+        
         enterDate.addEventListener('change', function(){
+            
             console.log(enterDate.value);
             enterDay.style.visibility = "visible";
             enterDay.style.display = "inline";
@@ -179,45 +236,37 @@
             inputChecker = 0;
         });
         meridiemIndicator.addEventListener('change', function(){
-            if(localStorage.liturgicalWeekStorage !== "") {
+            console.log(meridiemIndicator.value);
+            meridiemIndicator.classList.remove('border', 'border-danger');
             liturgicalWeek.style.display = "inline";
-            celebrant.style.display = "inline";
-            meridiemIndicator.classList.remove('border', 'border-danger');
-            } else {
-            meridiemIndicator.classList.remove('border', 'border-danger');
             liturgicalWeek.classList.add('border', 'border-danger');
-            }
         });
         liturgicalWeek.addEventListener('change', function(){
+            console.log(liturgicalWeek.value);
             liturgicalWeek.classList.remove('border', 'border-danger');
-            celebrant.style.display = "inline";
-            celebrant.classList.add('border', 'border-danger');
-            localStorage.setItem('liturgicalWeekStorage', `${liturgicalWeek.value}`); 
-        });
-        celebrant.addEventListener('change', function(){
-            if(localStorage.liturgicalSeasonStorage !== "") {
-            liturgicalSeason.style.display = "inline";
-            embedCodeFacebook.style.display = "inline";
-            inputChecker = 1;
-            } else {
-            celebrant.classList.remove('border', 'border-danger');
             liturgicalSeason.style.display = "inline";
             liturgicalSeason.classList.add('border', 'border-danger');
-            }
         });
+
         liturgicalSeason.addEventListener('change', function(){
+            console.log(liturgicalSeason.value);
             liturgicalSeason.classList.remove('border', 'border-danger');
             embedCodeFacebook.style.display = "inline";
             embedCodeFacebook.classList.add('border', 'border-danger');
             inputChecker = 1;
-            localStorage.setItem('liturgicalSeasonStorage', `${liturgicalSeason.value}`);
+            alert('ready to make new template, facebook code is optional');
         });
         embedCodeFacebook.addEventListener('change', function(){
+            alert("embed changed!")
             embedCodeFacebook.classList.remove('border', 'border-danger');
-            copyWebsiteCodeButton.style.visibility = 'visible';
+            srcFinder(embedCodeFacebook);
 
         });
-
+        function srcFinder(input) {
+            let str = input.value;
+            let splitStr = str.split('\"')[1];
+            input.value = splitStr;
+        }
         //======================================//
         //event listener on date input
         //event listener on date input to remove border danger
@@ -245,76 +294,78 @@
             enterDateDate = enterDate.value.split("-")[2];// ex. 03(for the third, leading zero)
             displayDate = enterDateObjectMonth + "/" + enterDateObjectDay + "/" + enterDateYearShort;
             let enterDateObject = new Date(enterDateYear, enterDateMonth - 1, enterDateDate);
-            console.log(enterDateObject);
-            console.log(enterDateDate);
+            // console.log(enterDateObject);
+            // console.log(enterDateDate);
             enterDateObjectMonth = enterDateObject.getMonth() + 1;// add one
-            console.log(enterDateObjectMonth);
+            // console.log(enterDateObjectMonth);
             enterDateObjectDay = enterDateObject.getDate();//no leading zero
             enterDateObjectDayOfWeek = enterDateObject.getDay();//0-6
-            console.log(enterDateObjectDayOfWeek);
+            // console.log(enterDateObjectDayOfWeek);
             dayOfWeek = daysOfWeek[enterDateObjectDayOfWeek].toLowerCase();//lowercase day of week
             enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
-            console.log(enterDay.value);
-            let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br> Organ prelude will begin shortly before the start of Mass at 5:15 PM` ;
+            // console.log(enterDay.value);
+            let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 5:15 PM` ;
+            let sundayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 10:00 AM` ; 
             let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
             if(meridiemIndicator.value == 'PM'){
                 periodIndicator = 'Evening';
             } else { 
                 periodIndicator = 'Morning';
             }
-            if ((enterDay.value == 'Saturday' && meridiemIndicator.value == 'PM') || enterDay.value == 'Sunday'){
+            if (enterDay.value === 'Saturday' && meridiemIndicator.value === 'PM') {
                 announcementBlock = saturdayAnnouncementBlock;
                 streamStartHour = '17';
-                streamStartMinute = '09';//pass in a string with leading zero if you want to keep the leading zero
+                streamStartMinute = '15';//pass in a string with leading zero if you want to keep the leading zero
                 checkDayOperator = '<';
                 facebookEmbed = weekendFacebookEmbed;
                 youtubeEmbed = weekendYoutubeEmbed;
                 bulletinAnnouncement = `<br>Liturgy guide/bulletin here:<br>http://www.cathedralsaintpaul.org/bulletin<br>`;
                 bulletinAnnouncementWebsite = `Bulletin/Liturgy Guide <a href="http://www.cathedralsaintpaul.org/bulletin" target="_blank">here</a>`
-            } else {
+            } else if (enterDay.value === 'Sunday' && meridiemIndicator.value === 'AM') {
+                announcementBlock = sundayAnnouncementBlock;
+                streamStartHour = '10';
+                streamStartMinute = '00';//pass in a string with leading zero if you want to keep the leading zero
+                checkDayOperator = '<';
+                facebookEmbed = weekendFacebookEmbed;
+                youtubeEmbed = weekendYoutubeEmbed;
+                bulletinAnnouncement = `<br>Liturgy guide/bulletin here:<br>http://www.cathedralsaintpaul.org/bulletin<br>`;
+                bulletinAnnouncementWebsite = `Bulletin/Liturgy Guide <a href="http://www.cathedralsaintpaul.org/bulletin" target="_blank">here</a>`
+                }
+                else {
                 announcementBlock = weekdayAnnouncementBlock;
                 facebookEmbed = weekdayFacebookEmbed;
                 youtubeEmbed = weekdayYoutubeEmbed;
                 bulletinAnnouncement = '';
                 bulletinAnnouncementWebsite = '';
                 checkDayOperator = '!=='
-            }
+                }
         };
-        function storedValues() {
-            liturgicalWeek.value = localStorage.liturgicalWeekStorage;
-            liturgicalSeason.value = localStorage.liturgicalSeasonStorage;
-            //set certain variables to local storage
-            //Liturgical Week liturgicalWeek , Celebrant, Liturgical Season liturgicalSeason
-            // and use those as the first values
-        }
-        storedValues();
         function makeTemplate(){
-            if(inputChecker === 0){
+            if(inputChecker == 0){
                 alert("check inputs");
                 return;
             } else {
             //ternary operator
             enterDateUpdater();
+
             copyFacebookTextButton.style.visibility = 'visible';
             copyWebsiteCodeButton.style.visibility = 'visible';
-            console.log(enterDateYear); //expected output ex. 2020
-            console.log(enterDateDate); //expected output ex. 03 (day of month, leading zero)
-            console.log(enterDateMonth); //expected output ex. 08 (Aug. in this example, leading zero)
-            console.log(dayOfWeek);
-            console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
-            console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
+            //console.log(enterDateYear); //expected output ex. 2020
+            //console.log(enterDateDate); //expected output ex. 03 (day of month, leading zero)
+            //console.log(enterDateMonth); //expected output ex. 08 (Aug. in this example, leading zero)
+            //console.log(dayOfWeek);
+            //console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
+            //console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
             facebookText = `
     <h1>Facebook Text</h1>
 <div id="facebook-copy-text">
-    ${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>
-    Celebrant: ${displayCelebrant}<br>
+    ${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week of ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>
     Support the Cathedral here:<br>
     https://www.cathedralsaintpaul.org/give<br>
     ${bulletinAnnouncement}
-    Mass readings available at a reduced subscription from Magnificat<br>
-    English: www.magnificat.com/free<br>
-    Spanish: www.magnificat.com/gratis<br>
-    For children: www.magnifikid.com/free<br>
+    Mass readings available from the USCCB:<br>
+    English| https://bible.usccb.org/<br>
+    Spanish| https://bible.usccb.org/es<br>
     <br>
     An Act of Spiritual Communion:<br>
     My Jesus, I believe that You are present in the Most Holy Sacrament.<br>
@@ -329,8 +380,6 @@ websiteCode = `
         <h1>Join Us For:</h1>
         <p>${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
         
-        
-        <em style="font-size: 14px;">Celebrant: ${displayCelebrant}</em>
         <div id="${dayOfWeek}${meridiemIndicator.value}-announcement">
             <p style="margin: 0px;">
                 <em style="font-size: 14px;">
@@ -341,7 +390,7 @@ websiteCode = `
             </p>
         </div>    
         <div id="${dayOfWeek}${meridiemIndicator.value}" style="text-align: center; background-image:url('/sites/default/files/files/${enterDateObjectMonth}_${enterDateObjectDay}%20${enterDay.value}%20${meridiemIndicator.value}%20Mass.jpg'); background-size: 400px 225px; width: 400px; height: 225px; margin: auto;">
-            <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="577" width="460" scrolling="no" src="${embedCodeFacebook.value}" style="border:none;overflow:hidden;" ></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
+            <iframe id="${dayOfWeek}${meridiemIndicator.value}Iframe" style="visibility: hidden;" allowfullscreen="true" allowtransparency="true" frameborder="0" height="225" width="400" scrolling="no" src="${embedCodeFacebook.value}" style="border:none;overflow:hidden;" ></iframe><!-- when embedding facebook live stream make sure to add at the end of the src "&show_text=0&width=560"-->
         </div>
         ${bulletinAnnouncementWebsite}
         <div>
@@ -350,22 +399,17 @@ websiteCode = `
                 </em>
             </p>
             <p style="margin:0px">
-                Mass readings available at a reduced subscription from Magnificat:
+                Mass readings available from the USCCB:
             </p>
             <ul style="list-style-type: none; margin-top: 0px;">
                 <li>
-                    <a href="https://us.magnificat.net/free" target="_blank">
+                    <a href="https://bible.usccb.org/" target="_blank" rel="noopener noreferrer">
                         English
                     </a>
                 </li>
                 <li>
-                    <a href="https://latina.magnificat.net/gratis" target="_blank">
+                    <a href="https://bible.usccb.org/es" target="_blank" rel="noopener noreferrer">
                         Spanish
-                    </a>
-                </li>
-                <li>
-                    <a href="https://us.magnificat.net/flipbook/KID/sample/" target="_blank">
-                        For Children
                     </a>
                 </li>
             </ul>
@@ -413,14 +457,11 @@ websiteCode = `
             return;
         } else {
             clearInterval(${dayOfWeek}${meridiemIndicator.value}TimeChecker);
-            setTimeout(function(){
             ${dayOfWeek}${meridiemIndicator.value}iFrame.src = ${dayOfWeek}${meridiemIndicator.value}iFrame.src;
             ${dayOfWeek}${meridiemIndicator.value}iFrame.style.visibility = "visible";
             ${dayOfWeek}${meridiemIndicator.value}.style.backgroundImage = "none";
-            ${dayOfWeek}${meridiemIndicator.value}.style.height = "577px";
-            ${dayOfWeek}${meridiemIndicator.value}.style.width = "460px";
-            ${dayOfWeek}${meridiemIndicator.value}Announcement.style.display = "none";}, 2000);
-        }
+            ${dayOfWeek}${meridiemIndicator.value}Announcement.style.display = "none";
+            }
     }
 <\/script>`;
             var template = `
