@@ -8,15 +8,16 @@
     </head>
     <body>
     <button class="btn btn-danger" id="reset-template-form" style="visibility: visible;">Reset Template</button>
-    <!-- <form id="initial-form"> -->
-        <button class="btn btn-primary rounded" id="new-template">Make New Template</button>
-        <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
-        <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
+    <button class="btn btn-primary rounded" id="new-template">Make New Template</button>
+    <button class="btn btn-primary" id="copy-facebook-text-button" style="visibility: hidden;">Copy Facebook Text</button>
+    <button class="btn btn-primary" id="copy-website-code-button" style="visibility: hidden;">Copy Website Code Text</button>
+    
+    <form id="initial-form">
             <br>
         <input class="rounded" id="enter-date" type="date" placeholder="Date: mm/dd/yyyy">
         <input id="enter-day" type="text" placeholder="Day: Monday" style="visibility: collapse; display: none;">
         <select id="meridiem-indicator" name="Meridiem Indicator" style="display: none;">
-            <option selected="selected">AM/PM</option>
+            <option selected="selected" value="">AM/PM</option>
             <option value="AM">AM</option>
             <option value="PM">PM</option>
         </select>
@@ -67,11 +68,15 @@
             <option value="Easter">Easter</option>
         </select>
         <input id="enter-embed-code-facebook" type="text" placeholder="Paste Entire Embed Code" style="display: none;">
-    <!-- </form> -->
+    </form>
     <div id="hidden-element" style="display: none;"></div>
     
     <script>
         let checkDayOperator;
+        let initialForm = document.getElementById('initial-form');
+        //console.log(initialForm);
+        let formElements = initialForm.elements; //elements of the initial form
+        // get values of formElements
         let inputChecker = 0;
         let copyFacebookTextButton = document.getElementById('copy-facebook-text-button');
         let copyWebsiteCodeButton = document.getElementById('copy-website-code-button');
@@ -85,6 +90,46 @@
         weekdayFacebookEmbed = 'https://www.facebook.com/watch/200206761419/305351103761003/'; //Daily Masses playlist - facebook
         weekendYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLgAGl78M33YMg0T_xFv6eBO'; //Sunday Masses playlist - youtube
         weekdayYoutubeEmbed = 'https://www.youtube.com/playlist?list=PLbUheNz4CRLj7ST6XUszihIdZUUOzuSD1'; //Daily Masses playlist - youtube
+        
+        
+        //prevent default of form. This keeps the form from 'submitting', i.e. clearing when I make the new template
+        initialForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+        });
+        //take info from form and put into local storage
+        // get form data
+        function getFormData(){
+            let formData = {};
+            formData.enterDate = enterDate.value;
+            formData.meridiemIndicator = meridiemIndicator.value;
+            formData.liturgicalWeek = liturgicalWeek.value;
+            formData.liturgicalSeason = liturgicalSeason.value;
+            // return data;
+            console.log(formData);
+            window.localStorage.setItem('formData', JSON.stringify(formData));
+            // console.log(window.localStorage);
+        }
+            // //date info
+            // console.log(enterDate.value);
+            // //meridiem info
+            // console.log(meridiemIndicator.value);
+            // //lit week
+            // console.log(liturgicalWeek.value);
+            // //lit season
+            // console.log(liturgicalSeason.value);
+        
+            // return formData;
+            // let data = { [initialForm]: {}};
+            // for (const element of formElements) {
+            //     console.log(element.name);
+                // if (element.name.length > 0) {
+                //     data[initialForm][element.name] = element.value;
+                // }
+            // }
+            // return data;
+        // }
+        // console.log(formElements);
+
         //Make a block of text for the Mass streaming announcement and display the proper announcement depending on the day of the week ie saturday vs weekday
         //need to change the naming convention for Sunday Mass jpg, or set up a rule so that displays as Sunday, vs input of Saturday.
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -111,6 +156,27 @@
         // function resetButtonFunction(){
         //     document.getElementById('initial-form').reset();
         // }
+        //set initial values of inputs from localStorage
+        //liturgical week and liturgical season are the two I want to set right away
+            window.onload = (e) => {
+                if(window.localStorage.getItem('formData')){
+                let myFormData = JSON.parse(window.localStorage.getItem('formData'))
+                console.log(typeof(liturgicalSeason.value));
+                console.log(myFormData.liturgicalSeason);
+                console.log(myFormData);
+                enterDate.value = myFormData?.enterDate;
+                meridiemIndicator.value = myFormData?.meridiemIndicator;
+                liturgicalWeek.value = myFormData?.liturgicalWeek;
+                liturgicalSeason.value = myFormData?.liturgicalSeason;
+                // liturgicalSeason.setAttribute('value' = myFormData?.liturgicalSeason;
+                // console.log(liturgicalSeason.value);
+                
+                }  else {
+                    return
+                }
+            }
+
+
         // copy text to the clipboard
         function copyTextToClipboard(text){
             var textArea = document.createElement("textarea");
@@ -142,6 +208,7 @@
        //add event listener to make template button
        newTemplate.addEventListener('click', function(){
             makeTemplate();
+            getFormData();
         });
         //add event listeners to copy text buttons
         copyButtonsEventListeners();
@@ -158,7 +225,9 @@
         }
         //======================================//
         //event listeners on input elements to show the next element
+        
         enterDate.addEventListener('change', function(){
+            
             console.log(enterDate.value);
             enterDay.style.visibility = "visible";
             enterDay.style.display = "inline";
@@ -167,17 +236,20 @@
             inputChecker = 0;
         });
         meridiemIndicator.addEventListener('change', function(){
+            console.log(meridiemIndicator.value);
             meridiemIndicator.classList.remove('border', 'border-danger');
             liturgicalWeek.style.display = "inline";
             liturgicalWeek.classList.add('border', 'border-danger');
         });
         liturgicalWeek.addEventListener('change', function(){
+            console.log(liturgicalWeek.value);
             liturgicalWeek.classList.remove('border', 'border-danger');
             liturgicalSeason.style.display = "inline";
             liturgicalSeason.classList.add('border', 'border-danger');
         });
 
         liturgicalSeason.addEventListener('change', function(){
+            console.log(liturgicalSeason.value);
             liturgicalSeason.classList.remove('border', 'border-danger');
             embedCodeFacebook.style.display = "inline";
             embedCodeFacebook.classList.add('border', 'border-danger');
@@ -222,16 +294,16 @@
             enterDateDate = enterDate.value.split("-")[2];// ex. 03(for the third, leading zero)
             displayDate = enterDateObjectMonth + "/" + enterDateObjectDay + "/" + enterDateYearShort;
             let enterDateObject = new Date(enterDateYear, enterDateMonth - 1, enterDateDate);
-            console.log(enterDateObject);
-            console.log(enterDateDate);
+            // console.log(enterDateObject);
+            // console.log(enterDateDate);
             enterDateObjectMonth = enterDateObject.getMonth() + 1;// add one
-            console.log(enterDateObjectMonth);
+            // console.log(enterDateObjectMonth);
             enterDateObjectDay = enterDateObject.getDate();//no leading zero
             enterDateObjectDayOfWeek = enterDateObject.getDay();//0-6
-            console.log(enterDateObjectDayOfWeek);
+            // console.log(enterDateObjectDayOfWeek);
             dayOfWeek = daysOfWeek[enterDateObjectDayOfWeek].toLowerCase();//lowercase day of week
             enterDay.value = daysOfWeek[enterDateObjectDayOfWeek];//capitalized day of week
-            console.log(enterDay.value);
+            // console.log(enterDay.value);
             let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 5:15 PM` ;
             let sundayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 10:00 AM` ; 
             let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
@@ -275,14 +347,15 @@
             } else {
             //ternary operator
             enterDateUpdater();
+
             copyFacebookTextButton.style.visibility = 'visible';
             copyWebsiteCodeButton.style.visibility = 'visible';
-            console.log(enterDateYear); //expected output ex. 2020
-            console.log(enterDateDate); //expected output ex. 03 (day of month, leading zero)
-            console.log(enterDateMonth); //expected output ex. 08 (Aug. in this example, leading zero)
-            console.log(dayOfWeek);
-            console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
-            console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
+            //console.log(enterDateYear); //expected output ex. 2020
+            //console.log(enterDateDate); //expected output ex. 03 (day of month, leading zero)
+            //console.log(enterDateMonth); //expected output ex. 08 (Aug. in this example, leading zero)
+            //console.log(dayOfWeek);
+            //console.log(enterDateObjectMonth); //expected output ex. 8 for August in this example, no leading zero)
+            //console.log(enterDateObjectDay); //expected output ex. 3 (day of month, no leading zero)
             facebookText = `
     <h1>Facebook Text</h1>
 <div id="facebook-copy-text">
