@@ -307,6 +307,9 @@
             let saturdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 5:15 PM` ;
             let sundayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 10:00 AM` ; 
             let weekdayAnnouncementBlock = `For ${enterDay.value} ${displayDate}<br>Mass will begin to stream at 7:30 AM`;
+            let saturdayFacebookAnnouncementBlock = ` ${displayDate} Anticipatory Mass| ${liturgicalWeek.value} Sunday in ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>`;
+            let sundayFacebookAnnouncementBlock =  `${displayDate} 10:00 a.m. ${enterDay.value} Mass| ${liturgicalWeek.value} Sunday in ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>`;
+            let weekdayFacebookAnnouncementBlock = ` ${displayDate} ${enterDay.value} Mass| ${liturgicalWeek.value} Week in ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>`;
             if(meridiemIndicator.value == 'PM'){
                 periodIndicator = 'Evening';
             } else { 
@@ -314,6 +317,7 @@
             }
             if (enterDay.value === 'Saturday' && meridiemIndicator.value === 'PM') {
                 announcementBlock = saturdayAnnouncementBlock;
+                facebookAnnouncementBlock = saturdayFacebookAnnouncementBlock;
                 streamStartHour = '17';
                 streamStartMinute = '15';//pass in a string with leading zero if you want to keep the leading zero
                 checkDayOperator = '<';
@@ -323,6 +327,7 @@
                 bulletinAnnouncementWebsite = `Bulletin/Liturgy Guide <a href="http://www.cathedralsaintpaul.org/bulletin" target="_blank">here</a>`
             } else if (enterDay.value === 'Sunday' && meridiemIndicator.value === 'AM') {
                 announcementBlock = sundayAnnouncementBlock;
+                facebookAnnouncementBlock = sundayFacebookAnnouncementBlock;
                 streamStartHour = '10';
                 streamStartMinute = '00';//pass in a string with leading zero if you want to keep the leading zero
                 checkDayOperator = '<';
@@ -333,6 +338,7 @@
                 }
                 else {
                 announcementBlock = weekdayAnnouncementBlock;
+                facebookAnnouncementBlock = weekdayFacebookAnnouncementBlock;
                 facebookEmbed = weekdayFacebookEmbed;
                 youtubeEmbed = weekdayYoutubeEmbed;
                 bulletinAnnouncement = '';
@@ -359,8 +365,9 @@
             facebookText = `
     <h1>Facebook Text</h1>
 <div id="facebook-copy-text">
-    ${displayDate} ${enterDay.value} ${periodIndicator} Mass| ${liturgicalWeek.value} Week of ${liturgicalSeason.value}, Cathedral of Saint Paul, St. Paul, MN <br>
-    
+    ${facebookAnnouncementBlock}
+        
+    <br>
     Support the Cathedral here:<br>
     https://www.cathedralsaintpaul.org/give<br>
     
@@ -379,7 +386,7 @@ websiteCode = `
     <div id="${dayOfWeek}${meridiemIndicator.value}-container">
         <div style="text-align: center;">        
         <h1>Join Us For:</h1>
-        <p>${displayDate} ${enterDay.value} ${periodIndicator} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
+        <p>${displayDate} ${enterDay.value} Mass for the ${liturgicalWeek.value} Week in ${liturgicalSeason.value}</p>
         
         <div id="${dayOfWeek}${meridiemIndicator.value}-announcement">
             <p style="margin: 0px;">
